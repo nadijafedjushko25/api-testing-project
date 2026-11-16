@@ -218,3 +218,42 @@ Post ID: `1`
 ### Execution Status
 
 Passed
+
+## HTTP-006 – Retrieve a Non-Existing Post
+
+- **Priority:** Medium
+- **Test Type:** Negative Testing
+- **Method:** GET
+- **Endpoint:** `https://jsonplaceholder.typicode.com/posts/9999`
+
+### Preconditions
+
+The API endpoint is available.
+
+### Test Data
+
+Post ID: `9999` (non-existing post)
+
+### Steps
+
+1. Open Postman.
+2. Create a GET request.
+3. Enter the endpoint URL with a non-existing post ID.
+4. Send the request.
+5. Verify the HTTP status code and response body.
+
+### Expected Result
+
+- HTTP status code is `404 Not Found`.
+- Response body is a valid JSON object.
+- Response body is empty (`{}`).
+
+### Actual Result
+
+- HTTP status code: `404 Not Found`.
+- Response body: `{}`.
+- All 3 Postman tests passed.
+
+### Execution Status
+
+Passed
