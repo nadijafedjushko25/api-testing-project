@@ -346,3 +346,51 @@ Post ID: `abc` (invalid ID format)
 ### Execution Status
 
 Passed
+
+## HTTP-009 – Create a Post with Empty Body
+
+- **Priority:** High
+- **Test Type:** Negative Testing
+- **Method:** POST
+- **Endpoint:** `https://jsonplaceholder.typicode.com/posts`
+
+### Preconditions
+
+The API endpoint is available.
+
+### Test Data
+
+```json
+{}
+```
+
+### Steps
+
+1. Open Postman.
+2. Create a POST request.
+3. Enter the endpoint URL.
+4. Select Body → raw → JSON.
+5. Send an empty JSON object.
+6. Verify the HTTP status code and response body.
+
+### Expected Result
+
+- HTTP status code is `400 Bad Request`.
+- Response contains a validation error.
+- The post is not created.
+
+### Actual Result
+
+- HTTP status code: `201 Created`.
+- Response body: `{"id": 101}`.
+- Response is valid JSON.
+- No validation error is returned.
+- 1 Postman test passed and 2 tests failed.
+
+### Execution Status
+
+Failed
+
+### Notes
+
+JSONPlaceholder is a mock API and does not implement required business validation for an empty request body. The actual result does not match the defined test requirement. This limitation does not confirm a defect in a real business application.
