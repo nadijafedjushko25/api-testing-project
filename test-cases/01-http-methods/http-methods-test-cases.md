@@ -80,3 +80,52 @@ User ID: `1`
 ### Execution Status
 
 Passed
+
+## HTTP-003 – Create a Post Successfully
+
+- **Priority:** High
+- **Test Type:** Positive Testing
+- **Method:** POST
+- **Endpoint:** `https://jsonplaceholder.typicode.com/posts`
+
+### Preconditions
+
+The API endpoint is available.
+
+### Test Data
+
+```json
+{
+  "title": "My first API test",
+  "body": "Learning Postman",
+  "userId": 1
+}
+```
+
+### Steps
+
+1. Open Postman.
+2. Create a POST request.
+3. Enter the endpoint URL.
+4. Select Body → raw → JSON.
+5. Enter the test data.
+6. Send the request.
+7. Verify the HTTP status code and response body.
+
+### Expected Result
+
+- HTTP status code is `201 Created`.
+- Response contains the correct `title`.
+- Response contains the correct `userId`.
+
+### Actual Result
+
+- HTTP status code: `201 Created`.
+- Title equals `My first API test`.
+- User ID equals `1`.
+- All 3 Postman tests passed.
+- JSONPlaceholder returned a simulated created resource; persistent database storage was not verified.
+
+### Execution Status
+
+Passed
