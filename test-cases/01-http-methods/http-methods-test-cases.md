@@ -129,3 +129,52 @@ The API endpoint is available.
 ### Execution Status
 
 Passed
+
+## HTTP-004 – Partially Update a Post Successfully
+
+- **Priority:** High
+- **Test Type:** Positive Testing
+- **Method:** PATCH
+- **Endpoint:** `https://jsonplaceholder.typicode.com/posts/1`
+
+### Preconditions
+
+The API endpoint is available.
+
+### Test Data
+
+```json
+{
+  "title": "Updated title"
+}
+```
+
+### Steps
+
+1. Open Postman.
+2. Create a PATCH request.
+3. Enter the endpoint URL.
+4. Select Body → raw → JSON.
+5. Enter the test data.
+6. Send the request.
+7. Verify the HTTP status code and response body.
+
+### Expected Result
+
+- HTTP status code is `200 OK`.
+- Response body is valid JSON.
+- The `title` field equals `Updated title`.
+- The `id` value equals `1`.
+
+### Actual Result
+
+- HTTP status code: `200 OK`.
+- Response body is valid JSON.
+- Title equals `Updated title`.
+- Post ID equals `1`.
+- All 4 Postman tests passed.
+- JSONPlaceholder simulated the update; persistent data storage was not verified.
+
+### Execution Status
+
+Passed
