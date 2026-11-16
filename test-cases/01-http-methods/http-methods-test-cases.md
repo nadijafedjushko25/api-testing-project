@@ -295,13 +295,15 @@ The API endpoint is available.
 ### Actual Result
 
 - HTTP status code: `201 Created`.
-- Response contains the submitted `body` and `userId`, and a generated `id`.
-- The API accepted the request without the `title` field.
+- Response body contains `body`, `userId`, and generated `id`.
+- Response does not contain `title`.
+- Response is valid JSON.
+- 2 Postman tests passed and 1 test failed.
 
-### Test Result
+### Execution Status
 
-**Failed** – Actual Result does not match Expected Result.
+Failed
 
 ### Notes
 
-JSONPlaceholder is a mock API and does not implement the required business validation. The result demonstrates a limitation of the test API and does not confirm a defect in a real business application.
+JSONPlaceholder is a mock API and does not implement the required business validation for the `title` field. The actual result does not match the defined test requirement. This limitation does not confirm a defect in a real business application.and does not implement the required business validation. The result demonstrates a limitation of the test API and does not confirm a defect in a real business application.
