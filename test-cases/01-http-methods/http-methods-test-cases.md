@@ -394,3 +394,39 @@ Failed
 ### Notes
 
 JSONPlaceholder is a mock API and does not implement required business validation for an empty request body. The actual result does not match the defined test requirement. This limitation does not confirm a defect in a real business application.
+
+### HTTP-010 – Update a Non-Existing Post
+
+**Objective:** Verify that updating a post that does not exist returns a 404 Not Found status.
+
+**Request:**
+- Method: PATCH
+- URL: `https://jsonplaceholder.typicode.com/posts/9999`
+- Body:
+```json
+{
+  "title": "Updated non-existing post"
+}
+```
+
+**Expected Result:**
+- Status code: 404 Not Found.
+- The API should indicate that the requested post does not exist.
+
+**Actual Result:**
+- Status code: 200 OK.
+- Response body:
+```json
+{
+  "title": "Updated non-existing post"
+}
+```
+
+**Postman Test Results:**
+- 2 PASSED
+- 1 FAILED
+
+**Execution Status:** Failed
+
+**Notes:** JSONPlaceholder returned 200 OK for a PATCH request targeting a non-existing post ID. This mock API does not enforce the expected existence validation. This result documents the difference between the project test requirement and the actual mock API behavior; it is not a confirmed defect in a real application.
+
