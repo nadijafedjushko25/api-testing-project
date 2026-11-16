@@ -178,3 +178,43 @@ The API endpoint is available.
 ### Execution Status
 
 Passed
+
+## HTTP-005 – Delete a Post Successfully
+
+- **Priority:** High
+- **Test Type:** Positive Testing
+- **Method:** DELETE
+- **Endpoint:** `https://jsonplaceholder.typicode.com/posts/1`
+
+### Preconditions
+
+The API endpoint is available.
+
+### Test Data
+
+Post ID: `1`
+
+### Steps
+
+1. Open Postman.
+2. Create a DELETE request.
+3. Enter the endpoint URL.
+4. Send the request.
+5. Verify the HTTP status code and response body.
+
+### Expected Result
+
+- HTTP status code is `200 OK`.
+- Response body is a valid JSON object.
+- Response body is empty (`{}`).
+
+### Actual Result
+
+- HTTP status code: `200 OK`.
+- Response body: `{}`.
+- All 3 Postman tests passed.
+- JSONPlaceholder simulated the deletion; persistent data deletion was not independently verified.
+
+### Execution Status
+
+Passed
