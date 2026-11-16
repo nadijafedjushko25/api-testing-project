@@ -430,3 +430,27 @@ JSONPlaceholder is a mock API and does not implement required business validatio
 
 **Notes:** JSONPlaceholder returned 200 OK for a PATCH request targeting a non-existing post ID. This mock API does not enforce the expected existence validation. This result documents the difference between the project test requirement and the actual mock API behavior; it is not a confirmed defect in a real application.
 
+### HTTP-011 – Delete a Non-Existing Post
+
+**Objective:** Verify that deleting a post that does not exist returns a 404 Not Found status.
+
+**Request:**
+- Method: DELETE
+- URL: `https://jsonplaceholder.typicode.com/posts/9999`
+- Body: None
+
+**Expected Result:**
+- Status code: 404 Not Found.
+- The API should indicate that the requested post does not exist.
+
+**Actual Result:**
+- Status code: 200 OK.
+- Response body: `{}`
+
+**Postman Test Results:**
+- 2 PASSED
+- 1 FAILED
+
+**Execution Status:** Failed
+
+**Notes:** JSONPlaceholder returned 200 OK with an empty JSON object for a DELETE request targeting a non-existing post ID. This mock API does not enforce the expected existence validation. This result documents the difference between the project test requirement and the actual mock API behavior; it is not a confirmed defect in a real application.
