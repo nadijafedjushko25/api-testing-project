@@ -307,3 +307,42 @@ Failed
 ### Notes
 
 JSONPlaceholder is a mock API and does not implement the required business validation for the `title` field. The actual result does not match the defined test requirement. This limitation does not confirm a defect in a real business application.and does not implement the required business validation. The result demonstrates a limitation of the test API and does not confirm a defect in a real business application.
+
+## HTTP-008 – Retrieve a Post with Invalid ID
+
+- **Priority:** Medium
+- **Test Type:** Negative Testing
+- **Method:** GET
+- **Endpoint:** `https://jsonplaceholder.typicode.com/posts/abc`
+
+### Preconditions
+
+The API endpoint is available.
+
+### Test Data
+
+Post ID: `abc` (invalid ID format)
+
+### Steps
+
+1. Open Postman.
+2. Create a GET request.
+3. Enter the endpoint URL with a non-numeric post ID.
+4. Send the request.
+5. Verify the HTTP status code and response body.
+
+### Expected Result
+
+- HTTP status code is `404 Not Found`.
+- Response body is a valid JSON object.
+- Response body is empty (`{}`).
+
+### Actual Result
+
+- HTTP status code: `404 Not Found`.
+- Response body: `{}`.
+- All 3 Postman tests passed.
+
+### Execution Status
+
+Passed
