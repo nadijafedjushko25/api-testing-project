@@ -454,3 +454,28 @@ JSONPlaceholder is a mock API and does not implement required business validatio
 **Execution Status:** Failed
 
 **Notes:** JSONPlaceholder returned 200 OK with an empty JSON object for a DELETE request targeting a non-existing post ID. This mock API does not enforce the expected existence validation. This result documents the difference between the project test requirement and the actual mock API behavior; it is not a confirmed defect in a real application.
+
+### HTTP-012 – Retrieve a Post with Invalid Endpoint
+
+**Objective:** Verify that requesting an invalid API endpoint returns a 404 Not Found status.
+
+**Request:**
+- Method: GET
+- URL: `https://jsonplaceholder.typicode.com/invalid-endpoint`
+- Body: None
+
+**Expected Result:**
+- Status code: 404 Not Found.
+- Response body should be an empty JSON object.
+
+**Actual Result:**
+- Status code: 404 Not Found.
+- Response body: `{}`
+
+**Postman Test Results:**
+- 3 PASSED
+- 0 FAILED
+
+**Execution Status:** Passed
+
+**Notes:** The API correctly returned 404 Not Found for an invalid endpoint.
