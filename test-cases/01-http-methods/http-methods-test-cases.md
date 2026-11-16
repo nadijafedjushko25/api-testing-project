@@ -27,10 +27,16 @@ Post ID: `1`
 - The `id` value equals `1`.
 
 ### Actual Result
-To be filled in after test execution.
+
+- HTTP status code: 200 OK.
+- Response body is valid JSON.
+- Response contains userId, id, title, and body fields.
+- Post ID equals 1.
+- All 4 Postman tests passed.
 
 ### Execution Status
-Not Executed
+
+Passed
 
 ## HTTP-002 – Retrieve a User Successfully
 
