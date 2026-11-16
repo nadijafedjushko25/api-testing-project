@@ -257,3 +257,51 @@ Post ID: `9999` (non-existing post)
 ### Execution Status
 
 Passed
+
+## HTTP-007 – Create a Post with Missing Title
+
+- **Priority:** High
+- **Test Type:** Negative Testing
+- **Method:** POST
+- **Endpoint:** `https://jsonplaceholder.typicode.com/posts`
+
+### Preconditions
+
+The API endpoint is available.
+
+### Test Data
+
+```json
+{
+  "body": "Testing a post without title",
+  "userId": 1
+}
+```
+
+### Steps
+
+1. Open Postman.
+2. Create a POST request.
+3. Enter the endpoint URL.
+4. Send the request without the required `title` field.
+5. Verify the HTTP status code and response body.
+
+### Expected Result
+
+- HTTP status code is `400 Bad Request`.
+- Response contains a validation error indicating that the `title` field is required.
+- The post is not created.
+
+### Actual Result
+
+- HTTP status code: `201 Created`.
+- Response contains the submitted `body` and `userId`, and a generated `id`.
+- The API accepted the request without the `title` field.
+
+### Test Result
+
+**Failed** – Actual Result does not match Expected Result.
+
+### Notes
+
+JSONPlaceholder is a mock API and does not implement the required business validation. The result demonstrates a limitation of the test API and does not confirm a defect in a real business application.
