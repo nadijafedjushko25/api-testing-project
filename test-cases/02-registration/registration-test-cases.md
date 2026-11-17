@@ -148,3 +148,60 @@
 
 **Notes:** Supabase accepted a password matching the configured minimum password length of 6 characters. All Postman assertions passed.
 
+## TC04 – Password Greater Than Minimum Length
+
+**Test Case ID:** REG-004
+
+**Title:** Registration with password longer than the minimum allowed length
+
+**Priority:** High
+
+**Test Type:** Positive
+
+**Preconditions:**
+
+- Supabase project is available.
+- Email registration provider is enabled.
+- Minimum password length is configured to 6 characters.
+- A unique test email address is available.
+- The Supabase Auth rate limit allows the registration request.
+
+**Test Data:**
+
+- Email: `api.testing.qa17211@yopmail.com` 
+- Password: `Qa1!aBcd` (8 characters)
+
+**Steps:**
+
+1. Open Postman.
+2. Select the `Supabase – API Testing` environment.
+3. Set the request method to POST.
+4. Enter the endpoint: `{{baseUrl}}/auth/v1/signup`.
+5. Add the required headers:
+   - `apikey: {{apiKey}}`
+   - `Content-Type: application/json`
+6. Select Body → raw → JSON.
+7. Enter a valid email address and an 8-character password.
+8. Send the request.
+9. Verify the API response and Postman test results.
+
+**Expected Result:**
+
+- API accepts the registration request.
+- API returns a successful response (expected `200 OK`, subject to the configured Supabase Auth behavior).
+- Response contains the registered user's information.
+- Returned email matches the submitted email.
+- User is assigned the appropriate authenticated role.
+- Registration is processed successfully.
+
+**Actual Result:**
+
+- API returned `429 Too Many Requests`.
+- Registration could not be verified because the request was rate-limited.
+- Successful registration was not confirmed.
+
+**Postman Test Results:** Not Passed / Not Verified — rate limit response (`429`).
+
+**Status:** Blocked
+
+**Notes:** The test execution was blocked by an API rate limit. The `429 Too Many Requests` response does not indicate that password validation failed. The test must be re-executed when the applicable rate limit allows requests. No successful registration result has been confirmed yet.
