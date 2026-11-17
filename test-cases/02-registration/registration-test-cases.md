@@ -261,3 +261,80 @@ Not executed yet.
 **Status:** Not Run
 
 **Notes:** Supabase may use anti-enumeration behavior, so the response for an already registered email can depend on email confirmation settings and Auth configuration. Verify the actual response before documenting a specific status code or error message.
+
+# TC06 – Registration with Invalid Email Format
+
+**Test Case ID:** TC06  
+**Priority:** High  
+**Test Type:** Negative Testing / API Validation
+
+### Preconditions
+- Supabase API is available.
+- Valid `baseUrl` and `apiKey` are configured in Postman environment.
+- Registration endpoint is accessible.
+
+### Test Data
+
+| Parameter | Value |
+|---|---|
+| Email | `test@` |
+| Password | Valid test password (stored in Postman environment) |
+
+### Request
+**Method:** POST  
+**Endpoint:** `{{baseUrl}}/auth/v1/signup`
+
+**Headers:**
+- `apikey: {{apiKey}}`
+- `Content-Type: application/json`
+
+**Body:**
+```json
+{
+  "email": "test@",
+  "password": "{{testPassword}}"
+}
+```
+
+### Test Steps
+1. Open the TC06 request in Postman.
+2. Select the Supabase - API Testing environment.
+3. Enter an invalid email format (`test@`).
+4. Send the POST request.
+5. Verify the HTTP status code.
+6. Validate the response body and error message.
+7. Verify that registration is unsuccessful.
+
+### Expected Result
+- API rejects the invalid email address.
+- HTTP status code is 400 Bad Request.
+- Response body contains a validation error.
+- Error code is `validation_failed`.
+- Error message indicates an invalid email format.
+- User registration is unsuccessful.
+
+### Actual Result
+HTTP Status: **400 Bad Request**
+
+Response:
+```json
+{
+  "code": 400,
+  "error_code": "validation_failed",
+  "msg": "Unable to validate email address: invalid format"
+}
+```
+
+### Postman Test Results
+- API rejects invalid email format – PASSED
+- Response body is valid JSON – PASSED
+- Response contains a validation error – PASSED
+- Registration is not successful – PASSED
+
+### Status
+**PASS** – Manual API negative test.
+
+### Notes
+The API correctly rejected the invalid email format and returned the expected validation error.
+
+
