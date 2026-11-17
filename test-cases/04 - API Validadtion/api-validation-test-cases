@@ -108,3 +108,117 @@ The valid equality operator is `eq`, for example:
 `id=eq.1`
 
 The API returned HTTP 400 with error code `PGRST100`, indicating that the filter expression could not be parsed.
+
+# TC13 – Invalid Query Parameter Data Type
+
+**Test Case ID:** TC13
+
+**Title:** Verify API handling of invalid data type in query parameter
+
+**Priority:** Medium
+
+**Test Type:** Negative Testing / API Validation / Error Handling
+
+### Preconditions
+
+- Supabase project is available.
+- REST API endpoint is accessible.
+- Valid `baseUrl` and `apiKey` are configured in Postman environment.
+- Table `qa_sql_injection_test` exists in the `public` schema.
+- The `id` column has the BIGINT data type.
+- Test records are available in the table.
+
+### Test Data
+
+**Table:** `qa_sql_injection_test`
+
+**Column:** `id`
+
+**Expected data type:** BIGINT
+
+**Invalid filter value:** `not-a-number`
+
+**Query parameter:**
+
+```text
+id=eq.not-a-number
+```
+
+### Request Details
+
+**Method:** GET
+
+**Endpoint:**
+
+```text
+{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&id=eq.not-a-number
+```
+
+**Headers:**
+- `apikey: {{apiKey}}`
+- `Content-Type: application/json`
+
+**Authorization:** No Auth
+
+### Test Steps
+
+1. Open Postman.
+2. Select the `Supabase - API Testing` environment.
+3. Set the request method to GET.
+4. Enter the REST API endpoint.
+5. Add the required request headers.
+6. Set the `id` query parameter to `eq.not-a-number`.
+7. Send the GET request.
+8. Verify the HTTP response status code.
+9. Validate the response body.
+10. Verify the PostgreSQL error code.
+11. Check the error message for the invalid data type.
+12. Verify that the API correctly rejects the invalid query parameter.
+
+### Expected Result
+
+- API rejects the request because the `id` column expects a numeric value.
+- HTTP status code is 400 Bad Request.
+- Response body is valid JSON.
+- PostgreSQL error code is `22P02`.
+- Error message indicates invalid input syntax for type BIGINT.
+- API does not return regular table records.
+
+### Actual Result
+
+**HTTP Status Code:** 400 Bad Request
+
+**Response Body:**
+
+```json
+{
+  "code": "22P02",
+  "details": null,
+  "hint": null,
+  "message": "invalid input syntax for type bigint: \"not-a-number\""
+}
+```
+
+The API correctly rejected the request because the supplied text value could not be converted to BIGINT.
+
+### Postman Test Results
+
+- Status code is 400 – PASSED
+- Response body is valid JSON – PASSED
+- API rejects invalid data type – PASSED
+- Response contains invalid BIGINT error message – PASSED
+- Response time is recorded – PASSED
+
+**Total Assertions:** 5/5 PASSED
+
+### Status
+
+**PASS**
+
+### Notes
+
+The test verifies API validation and error handling when a query parameter contains a value that does not match the database column data type.
+
+The `id` column expects a BIGINT value, but the request supplied the text value `not-a-number`.
+
+PostgreSQL returned error code `22P02` (invalid text representation), and the API correctly rejected the request with HTTP 400 Bad Request.
