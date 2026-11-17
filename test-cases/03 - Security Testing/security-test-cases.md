@@ -337,3 +337,117 @@ RLS is enabled, and the configured policy allows read access only. However, this
 This test demonstrates the principle of least privilege and helps verify access restrictions for the Supabase REST API.
 
 A separate verification of the table contents can be used to confirm that the original three records remain unchanged.
+
+# TC11 – RLS – Unauthorized Data Access
+
+**Test Case ID:** TC11
+
+**Title:** Verify that Row Level Security prevents anonymous access to protected records
+
+**Priority:** High
+
+**Test Type:** Security Testing / Authorization / RLS
+
+### Preconditions
+
+- Supabase project is available.
+- REST API endpoint is accessible.
+- Public `anon` API key is configured in Postman.
+- Table `qa_rls_protected_test` exists in the `public` schema.
+- Row Level Security (RLS) is enabled on the table.
+- Three dummy test records exist in the table.
+- The `anon` role has SELECT table privilege.
+- No SELECT policy is configured for the `anon` role.
+- Postman request uses the `anon` API key without a user access token.
+
+### Test Data
+
+**Table:** `public.qa_rls_protected_test`
+
+**API Role:** `anon`
+
+**Expected accessible records:** 0
+
+**Existing test records:**
+- QA Record 1
+- QA Record 2
+- QA Record 3
+
+### Request Details
+
+**Method:** GET
+
+**Endpoint:**
+
+```text
+{{baseUrl}}/rest/v1/qa_rls_protected_test?select=*
+```
+
+**Headers:**
+- `apikey: {{apiKey}}`
+- `Content-Type: application/json`
+
+**Authorization:** No Auth
+
+### Test Steps
+
+1. Open Postman.
+2. Select the `Supabase - API Testing` environment.
+3. Set the request method to GET.
+4. Enter the protected table REST API endpoint.
+5. Add the required request headers using the public anon API key.
+6. Ensure that no user access token is provided.
+7. Send the GET request.
+8. Verify the HTTP response status code.
+9. Validate the response body.
+10. Verify that the response is an empty array.
+11. Confirm that no restricted test records are exposed.
+12. Check the response time.
+
+### Expected Result
+
+- API returns HTTP 200 OK.
+- Response body is valid JSON.
+- Response is an empty array.
+- Anonymous API client cannot access protected table records.
+- No restricted records are exposed.
+- RLS policies prevent unauthorized row access.
+
+### Actual Result
+
+**HTTP Status Code:** 200 OK
+
+**Response Body:**
+
+```json
+[]
+```
+
+The API returned an empty JSON array.
+
+Although three records exist in the table, the anonymous API client could not retrieve them because no SELECT policy was configured for the `anon` role.
+
+### Postman Test Results
+
+- Status code is 200 – PASSED
+- Response body is valid JSON – PASSED
+- Response is an array – PASSED
+- RLS prevents anon access to protected records – PASSED
+- No restricted records are exposed – PASSED
+- Response time is recorded – PASSED
+
+**Total Assertions:** 6/6 PASSED
+
+### Status
+
+**PASS**
+
+### Notes
+
+This test verifies Row Level Security (RLS) enforcement for anonymous API access.
+
+The `anon` role has table-level SELECT permission, but no applicable SELECT policy exists. Therefore, PostgreSQL RLS prevents the role from accessing table rows.
+
+The API returns an empty array rather than exposing restricted data.
+
+This test demonstrates the difference between table-level privileges and row-level access control.
