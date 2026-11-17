@@ -243,24 +243,31 @@
 8. Send the request.
 9. Check the API response, status code, and response body.
 
-**Expected Result:**
+### Actual Result
 
-- API processes the registration attempt according to the configured Supabase Auth behavior.
-- The API must not create a second account for the same email address.
-- The response must follow the configured duplicate-email and anti-enumeration behavior.
-- No duplicate user account should be created.
+- HTTP Status Code: 200 OK
+- API returned a valid JSON response.
+- Response time was successfully recorded.
+- Existing email was used for the registration attempt.
+- Supabase Authentication Users dashboard confirmed that only one user account exists for the test email.
+- No duplicate user account was created.
 
-**Actual Result:**
+### Postman Test Results
 
-Not executed yet.
+- Response status is not a server error – PASSED
+- Response body is valid JSON – PASSED
+- Response time is recorded – PASSED
+- Duplicate account prevention – PASSED (manually verified in Supabase Dashboard → Authentication → Users)
 
-**Postman Test Results:**
+### Status
 
-Not executed yet.
+**PASS**
 
-**Status:** Not Run
+### Notes
 
-**Notes:** Supabase may use anti-enumeration behavior, so the response for an already registered email can depend on email confirmation settings and Auth configuration. Verify the actual response before documenting a specific status code or error message.
+Supabase applied anti-enumeration behavior and returned HTTP 200 OK instead of explicitly reporting that the email address was already registered.
+
+The absence of a duplicate account was verified manually in the Supabase Authentication Users dashboard.
 
 # TC06 – Registration with Invalid Email Format
 
