@@ -205,3 +205,59 @@
 **Status:** Blocked
 
 **Notes:** The test execution was blocked by an API rate limit. The `429 Too Many Requests` response does not indicate that password validation failed. The test must be re-executed when the applicable rate limit allows requests. No successful registration result has been confirmed yet.
+
+## TC05 – Registration with Already Registered Email
+
+**Test Case ID:** REG-005
+
+**Title:** Registration using an email address that is already registered
+
+**Priority:** High
+
+**Test Type:** Negative
+
+**Preconditions:**
+
+- Supabase project is available.
+- Email registration provider is enabled.
+- A user account with the test email address already exists.
+- The test account has been registered successfully.
+- Supabase Auth rate limits allow the test request.
+
+**Test Data:**
+
+- Email: `api.testing.qa1711@yopmail.com` (already registered email)
+- Password: `Qa1!aBcd` (valid password)
+
+**Steps:**
+
+1. Open Postman.
+2. Select the `Supabase – API Testing` environment.
+3. Set the request method to POST.
+4. Enter the endpoint: `{{baseUrl}}/auth/v1/signup`.
+5. Add the required headers:
+   - `apikey: {{apiKey}}`
+   - `Content-Type: application/json`
+6. Select Body → raw → JSON.
+7. Enter the already registered email address and a valid password.
+8. Send the request.
+9. Check the API response, status code, and response body.
+
+**Expected Result:**
+
+- API processes the registration attempt according to the configured Supabase Auth behavior.
+- The API must not create a second account for the same email address.
+- The response must follow the configured duplicate-email and anti-enumeration behavior.
+- No duplicate user account should be created.
+
+**Actual Result:**
+
+Not executed yet.
+
+**Postman Test Results:**
+
+Not executed yet.
+
+**Status:** Not Run
+
+**Notes:** Supabase may use anti-enumeration behavior, so the response for an already registered email can depend on email confirmation settings and Auth configuration. Verify the actual response before documenting a specific status code or error message.
