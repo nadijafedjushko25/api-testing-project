@@ -93,3 +93,58 @@
 **Status:** Passed
 
 **Notes:** Supabase correctly rejected a password shorter than the configured minimum length of 6 characters.
+
+## TC03 – Password Exactly Minimum Length
+
+**Test Case ID:** REG-003
+
+**Title:** Registration with password matching the minimum allowed length
+
+**Priority:** High
+
+**Test Type:** Positive / Boundary Value
+
+**Preconditions:**
+
+- Supabase project is available.
+- Email registration provider is enabled.
+- Minimum password length is configured to 6 characters.
+- A new test email address is available.
+
+**Test Data:**
+
+- Email: `api.testing.qa1711@yopmail.com`
+- Password: `Qa1!aB` (6 characters)
+
+**Steps:**
+
+1. Open Postman.
+2. Select the `Supabase – API Testing` environment.
+3. Set the request method to POST.
+4. Send a request to `{{baseUrl}}/auth/v1/signup`.
+5. Enter a valid email and a password containing exactly 6 characters.
+6. Check the API response.
+
+**Expected Result:**
+
+- API accepts the registration request.
+- API returns status code `200 OK`.
+- Response contains a user ID.
+- Response contains the registered email address.
+- Response contains the user role `authenticated`.
+- Registration is successful.
+
+**Actual Result:**
+
+- API returned `200 OK`.
+- Response contained a user ID.
+- Response contained the registered email address.
+- Response contained the user role `authenticated`.
+- Registration was successful.
+
+**Postman Test Results:** 4/4 Passed
+
+**Status:** Passed
+
+**Notes:** Supabase accepted a password matching the configured minimum password length of 6 characters. All Postman assertions passed.
+
