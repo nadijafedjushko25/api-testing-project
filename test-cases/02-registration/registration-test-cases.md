@@ -453,3 +453,102 @@ The API correctly rejected the invalid email format and returned the expected va
 The API correctly rejected the registration request because the password field was empty and returned a validation error.
 
 No successful registration occurred.
+
+# TC08 – Registration Without API Key
+
+**Test Case ID:** REG-008
+
+**Title:** Registration request without API Key
+
+**Priority:** High
+
+**Test Type:** Negative / API Security
+
+### Preconditions
+
+- Supabase project is available.
+- Email registration provider is enabled.
+- Supabase API endpoint is accessible.
+- Valid `baseUrl` is configured in Postman environment.
+- API key is intentionally omitted from the request.
+
+### Test Data
+
+- Email: Unique test email address.
+- Password: Valid test password.
+- API Key: Not provided.
+
+### Request Details
+
+**Method:** POST
+
+**Endpoint:** `{{baseUrl}}/auth/v1/signup`
+
+**Headers:**
+- `Content-Type: application/json`
+- `apikey`: intentionally omitted.
+
+### Request Body
+
+```json
+{
+  "email": "{{email}}",
+  "password": "{{testPassword}}"
+}
+```
+
+### Test Steps
+
+1. Open Postman.
+2. Select the `Supabase - API Testing` environment.
+3. Set the request method to POST.
+4. Enter the registration endpoint.
+5. Add the Content-Type header.
+6. Disable or remove the `apikey` header.
+7. Select Body → raw → JSON.
+8. Enter valid registration data.
+9. Send the request.
+10. Verify the HTTP status code.
+11. Validate the response body and error message.
+12. Verify that the API rejects the request.
+
+### Expected Result
+
+- API Gateway rejects the request because the API key is missing.
+- HTTP status code is 401 Unauthorized.
+- Response body contains an appropriate error message.
+- Response indicates that no API key was found.
+- Registration request is not processed.
+
+### Actual Result
+
+**HTTP Status Code:** 401 Unauthorized
+
+**Response Body:**
+
+```json
+{
+  "message": "No API key found in request",
+  "hint": "No `apikey` request header or url param was found."
+}
+```
+
+The API correctly rejected the request without an API key.
+
+### Postman Test Results
+
+- Status code is 401 Unauthorized – PASSED
+- Response body is valid JSON – PASSED
+- API rejects request when API key is missing – PASSED
+- Response contains missing API key hint – PASSED
+- Response time is recorded – PASSED
+
+### Status
+
+**PASS**
+
+### Notes
+
+The Supabase API Gateway successfully prevented access to the registration endpoint when the required API key was not provided.
+
+This test verifies API authentication at the gateway level.
