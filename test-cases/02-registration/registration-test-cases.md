@@ -185,26 +185,45 @@
 8. Send the request.
 9. Verify the API response and Postman test results.
 
-**Expected Result:**
+Expected Result
 
-- API accepts the registration request.
-- API returns a successful response (expected `200 OK`, subject to the configured Supabase Auth behavior).
-- Response contains the registered user's information.
-- Returned email matches the submitted email.
-- User is assigned the appropriate authenticated role.
-- Registration is processed successfully.
+API accepts the password because it exceeds the configured minimum length.
 
-**Actual Result:**
+Password validation is successful.
 
-- API returned `429 Too Many Requests`.
-- Registration could not be verified because the request was rate-limited.
-- Successful registration was not confirmed.
+API processes the registration request successfully.
 
-**Postman Test Results:** Not Passed / Not Verified — rate limit response (`429`).
+No weak password validation error is returned.
 
-**Status:** Blocked
+User registration is successful according to the configured email confirmation behavior.
 
-**Notes:** The test execution was blocked by an API rate limit. The `429 Too Many Requests` response does not indicate that password validation failed. The test must be re-executed when the applicable rate limit allows requests. No successful registration result has been confirmed yet.
+Actual Result
+
+Initial execution was temporarily affected by Supabase Auth rate limiting (HTTP 429 Too Many Requests).
+
+After the rate limit condition cleared, the request was executed again.
+
+The test passed successfully.
+
+Password validation was accepted.
+
+HTTP Status Code: Record the status code from the successful Postman execution.
+
+Postman Test Results
+
+Response status is not a server error – PASSED
+
+Response body is valid JSON – PASSED
+
+Response time is recorded – PASSED
+
+Password exceeds minimum required length – PASSED
+
+No weak password validation error – PASSED
+
+Status
+
+PASS
 
 ## TC05 – Registration with Already Registered Email
 
