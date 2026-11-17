@@ -363,4 +363,93 @@ Response:
 ### Notes
 The API correctly rejected the invalid email format and returned the expected validation error.
 
+# TC07 – Registration with Empty Password
 
+**Test Case ID:** REG-007
+
+**Title:** Registration using an empty password
+
+**Priority:** High
+
+**Test Type:** Negative / Validation
+
+### Preconditions
+
+- Supabase project is available.
+- Email registration provider is enabled.
+- Valid `baseUrl` and `apiKey` are configured in Postman environment.
+- A valid test email address is available.
+- Supabase Auth rate limits allow the test request.
+
+### Test Data
+
+- Email: Unique test email address.
+- Password: Empty string (`""`).
+
+### Request Details
+
+**Method:** POST
+
+**Endpoint:** `{{baseUrl}}/auth/v1/signup`
+
+**Headers:**
+- `apikey: {{apiKey}}`
+- `Content-Type: application/json`
+
+**Request Body:**
+
+```json
+{
+  "email": "new.unique.test@example.com",
+  "password": ""
+}
+```
+
+### Test Steps
+
+1. Open Postman.
+2. Select the `Supabase - API Testing` environment.
+3. Set the request method to POST.
+4. Enter the endpoint: `{{baseUrl}}/auth/v1/signup`.
+5. Add the required request headers.
+6. Select Body → raw → JSON.
+7. Enter a valid test email address.
+8. Leave the password field empty.
+9. Send the POST request.
+10. Verify the HTTP response status code.
+11. Validate the response body and error message.
+12. Verify that registration is rejected.
+
+### Expected Result
+
+- API rejects registration with an empty password.
+- HTTP status code is 400 Bad Request.
+- Response body contains a validation error.
+- Error code is `validation_failed`.
+- Error message indicates that a valid password is required.
+- User registration is unsuccessful.
+
+### Actual Result
+
+- HTTP Status Code: 400 Bad Request
+- Error Code: `validation_failed`
+- Error Message: `Signup requires a valid password`
+- API rejected registration with an empty password.
+
+### Postman Test Results
+
+- Status code is 400 – PASSED
+- Response body is valid JSON – PASSED
+- API rejects empty password – PASSED
+- Registration is not successful – PASSED
+- Response time is recorded – PASSED
+
+### Status
+
+**PASS**
+
+### Notes
+
+The API correctly rejected the registration request because the password field was empty and returned a validation error.
+
+No successful registration occurred.
