@@ -770,6 +770,113 @@ It complements:
 
 **Note:** Successful token refresh does not necessarily mean the previous Access Token is immediately revoked. Its validity depends on the configured token and session behavior.
 
+# TC29 – Invalid or Revoked Refresh Token
+
+## Test Case ID
+AUTH-008
+
+## Title
+Refresh Token Reuse / Invalid Refresh Token
+
+## Module
+Authentication & Token Lifecycle
+
+## Category
+Authentication / Security Testing
+
+## Priority
+High
+
+## Status
+PASS
+
+## Objective
+Verify that the API rejects an invalid or previously used Refresh Token and prevents unauthorized token renewal.
+
+## Preconditions
+- A Supabase project is configured.
+- A valid Supabase API key is available.
+- A registered user account exists.
+- The user has successfully logged in.
+- A valid Refresh Token has been issued.
+- The Refresh Token has been used successfully in a previous refresh request.
+- A new Refresh Token has been issued through token rotation.
+
+## Request Details
+
+**Method:** POST
+
+**Endpoint:**
+```text
+{{baseUrl}}/auth/v1/token?grant_type=refresh_token
+```
+
+**Authorization:** No Auth
+
+### Headers
+
+| Key | Value |
+|---|---|
+| apikey | {{apiKey}} |
+| Content-Type | application/json |
+
+### Request Body
+
+```json
+{
+  "refresh_token": "{{previousRefreshToken}}"
+}
+```
+
+## Test Steps
+1. Log in using valid credentials.
+2. Obtain an Access Token and Refresh Token.
+3. Send a refresh request using the valid Refresh Token.
+4. Obtain the newly issued Refresh Token.
+5. Preserve the previous Refresh Token.
+6. Send another refresh request using the previously used Refresh Token.
+7. Verify that the API rejects the request.
+8. Verify that no new authentication tokens are returned.
+
+## Expected Results
+- API rejects the previously used Refresh Token.
+- HTTP status code is 400 Bad Request.
+- Response is returned in JSON format.
+- An authentication error code is returned.
+- No new Access Token is returned.
+- No new Refresh Token is returned.
+- An error message is returned.
+
+## Actual Results
+- API rejected the previous Refresh Token.
+- HTTP status code: 400 Bad Request.
+- Response was returned in JSON format.
+- Authentication error details were returned.
+- No new Access Token was returned.
+- No new Refresh Token was returned.
+
+## Post-response Tests
+- Verify HTTP status code is 400.
+- Verify response is JSON.
+- Verify an authentication error code is present.
+- Verify Access Token is not returned.
+- Verify Refresh Token is not returned.
+- Verify an error message is returned.
+
+## Test Result
+**PASS** – The API rejected the previously used Refresh Token and did not issue new authentication tokens.
+
+## Security Notes
+This test verifies Refresh Token reuse protection and helps assess the security of token rotation.
+
+Rejecting previously used refresh tokens helps prevent unauthorized session renewal using stale credentials.
+
+It complements:
+- **TC28** – Refresh Access Token
+- **TC30** – Logout and Session Revocation
+
+**Note:** The observed HTTP status code and error response reflect the behavior of the tested Supabase Auth endpoint.
+
 TC30 — Logout and Session Revocation
 
 PASS
