@@ -656,6 +656,119 @@ It complements:
 
 **Note:** The observed HTTP status code and error response reflect the behavior of the tested Supabase Auth endpoint.
 
+# TC28 – Refresh Access Token
+
+## Test Case ID
+AUTH-007
+
+## Title
+Refresh Access Token Using Refresh Token
+
+## Module
+Authentication & Token Lifecycle
+
+## Category
+Authentication / Token Lifecycle Testing
+
+## Priority
+High
+
+## Status
+PASS
+
+## Objective
+Verify that an authenticated user can obtain a new Access Token using a valid Refresh Token without providing email and password again.
+
+## Preconditions
+- A Supabase project is configured.
+- A valid Supabase API key is available.
+- A registered user account exists.
+- The user has successfully logged in through the authentication endpoint.
+- A valid Access Token and Refresh Token are available.
+
+## Request Details
+
+**Method:** POST
+
+**Endpoint:**
+```text
+{{baseUrl}}/auth/v1/token?grant_type=refresh_token
+```
+
+**Authorization:** No Auth
+
+### Headers
+
+| Key | Value |
+|---|---|
+| apikey | {{apiKey}} |
+| Content-Type | application/json |
+
+### Request Body
+
+```json
+{
+  "refresh_token": "{{refreshToken}}"
+}
+```
+
+## Test Steps
+1. Log in using valid user credentials.
+2. Obtain the Access Token and Refresh Token.
+3. Save the current tokens in the Postman environment.
+4. Create a POST request to the token refresh endpoint.
+5. Set the `grant_type=refresh_token` query parameter.
+6. Include the valid Refresh Token in the request body.
+7. Send the request.
+8. Verify the response status and token fields.
+9. Compare the new Access Token with the previous Access Token.
+10. Save the newly issued tokens in the Postman environment.
+
+## Expected Results
+- API returns HTTP status code **200 OK**.
+- Response is returned in JSON format.
+- A new Access Token is returned.
+- A Refresh Token is returned.
+- Token type is `bearer`.
+- Token expiration time is greater than zero.
+- The new Access Token differs from the previous Access Token.
+
+## Actual Results
+- API successfully processed the refresh request.
+- HTTP status code: **200 OK**.
+- Response was returned in JSON format.
+- A new Access Token was returned.
+- A Refresh Token was returned.
+- Token type was `bearer`.
+- Token expiration time was positive.
+- The new Access Token differed from the previous Access Token.
+- New tokens were saved in the Postman environment.
+
+## Post-response Tests
+- Verify HTTP status code is 200.
+- Verify response is JSON.
+- Verify a new Access Token is returned.
+- Verify a Refresh Token is returned.
+- Verify token type is `bearer`.
+- Verify token expiration time is valid.
+- Verify the Access Token has been refreshed.
+
+## Test Result
+**PASS** – The API successfully refreshed the authentication tokens using a valid Refresh Token without requiring the user to log in again.
+
+## Security Notes
+This test verifies the Refresh Token mechanism and token lifecycle management.
+
+Refresh Token Rotation helps reduce the risk associated with reuse of previously issued refresh tokens.
+
+The newly issued tokens replace the previous tokens in the Postman environment.
+
+It complements:
+- **TC22** – Login with Valid Credentials
+- **TC24** – Get User with Valid Bearer Token
+- **TC27** – Access Resource with Expired JWT
+
+**Note:** Successful token refresh does not necessarily mean the previous Access Token is immediately revoked. Its validity depends on the configured token and session behavior.
 
 TC30 — Logout and Session Revocation
 
