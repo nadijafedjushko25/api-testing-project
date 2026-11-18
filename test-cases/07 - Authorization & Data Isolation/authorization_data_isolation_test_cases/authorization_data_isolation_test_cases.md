@@ -340,3 +340,98 @@ This confirms user-level data isolation for the tested SELECT endpoint.
 
 **Security Note:** This test validates RLS-based data isolation for SELECT operations. It does not cover every possible BOLA/IDOR scenario or other HTTP methods.
 
+# TC35 – Unauthorized Data Modification
+
+**Test Case ID:** AUTHZ-005  
+**Category:** Authorization & Data Isolation  
+**Priority:** High  
+**Type:** Negative Testing  
+**Status:** PASS
+
+## Objective
+Verify that an authenticated user cannot modify records belonging to another user through the Supabase REST API.
+
+The test validates Row Level Security (RLS) for UPDATE operations and ensures that users can only modify their own records.
+
+## Preconditions
+- Supabase project is configured.
+- Table `qa_user_data_test` exists.
+- RLS is enabled on the table.
+- Authenticated users have UPDATE permission.
+- An RLS UPDATE policy restricts modifications using `auth.uid() = user_id`.
+- Two test users exist in Supabase Authentication.
+- Each user has a separate record in `qa_user_data_test`.
+- A valid access token for User 1 is available.
+
+## Test Data
+
+| Field | User 1 | User 2 |
+|---|---|---|
+| User ID | `2d8f9dc6-68bc-4a18-8db1-9bead4420417` | `4805b7ca-d2f5-4c43-86e9-04e9314803ca` |
+| Target record ID | 1 | 2 |
+| Test data | TC33 - User 1 private test record | TC34 - User 2 private test record |
+
+## Request Details
+
+**Method:** PATCH
+
+**Endpoint:**
+```http
+{{baseUrl}}/rest/v1/qa_user_data_test?id=eq.2
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | `{{apiKey}}` |
+| Authorization | `Bearer {{accessToken}}` |
+| Content-Type | `application/json` |
+| Prefer | `return=representation` |
+
+**Request Body:**
+```json
+{
+    "test_data": "TC35 - Unauthorized modification attempt"
+}
+```
+
+**Authenticated user:** User 1
+
+**Target record owner:** User 2
+
+## Expected Result
+- HTTP status code: `200 OK`.
+- Response body is a valid JSON array.
+- Response array is empty because RLS prevents access to User 2's record.
+- No records are updated.
+- User 2's original record remains unchanged.
+
+## Actual Result
+- HTTP status: `200 OK`.
+- Response body: `[]`.
+- No records were returned as updated.
+- SQL Editor verification confirmed that User 2's original record remained unchanged.
+
+Original value:
+`TC34 - User 2 private test record`
+
+## Postman Test Results
+**6/6 assertions passed.**
+
+- Status code is 200 OK.
+- Response is valid JSON.
+- Response is an array.
+- No records were updated.
+- User 2's record was not returned.
+- Unauthorized modification was prevented.
+
+## Conclusion
+The test passed successfully.
+
+The RLS UPDATE policy correctly prevented User 1 from modifying User 2's record.
+
+The test confirms that user-level data isolation applies not only to SELECT operations but also to UPDATE operations.
+
+**Security Note:** An HTTP 200 response with an empty array does not mean that the record was modified. The database verification confirmed that the original record remained unchanged.
+
