@@ -550,6 +550,111 @@ It complements:
 
 **Note:** This test checks an invalid JWT. An expired but otherwise valid JWT is covered separately in TC27.
 
+# TC27 – Access Resource with Expired JWT
+
+## Test Case ID
+AUTH-006
+
+## Title
+Access Protected Resource with Expired JWT
+
+## Module
+Authentication & Token Lifecycle
+
+## Category
+Authentication / Security Testing
+
+## Priority
+High
+
+## Status
+PASS
+
+## Objective
+Verify that the API rejects an expired JWT and prevents unauthorized access to protected user information.
+
+## Preconditions
+- A Supabase project is configured.
+- A valid Supabase API key is available.
+- A valid user account exists.
+- JWT expiration is configured to 300 seconds for this test.
+- A valid Access Token has been obtained through login.
+- The Access Token has expired before executing the request.
+
+## Request Details
+
+**Method:** GET
+
+**Endpoint:**
+```text
+{{baseUrl}}/auth/v1/user
+```
+
+**Authorization:** No Auth
+
+### Headers
+
+| Key | Value |
+|---|---|
+| apikey | {{apiKey}} |
+| Authorization | Bearer {{expiredAccessToken}} |
+
+**Request Body:** None
+
+## Test Steps
+1. Configure the JWT expiration period to 300 seconds.
+2. Log in using valid credentials.
+3. Save the generated Access Token.
+4. Wait until the token expires.
+5. Send a GET request to `/auth/v1/user`.
+6. Include the expired Access Token in the Authorization header.
+7. Verify the HTTP status code and error response.
+8. Execute Post-response assertions.
+
+## Expected Results
+- API rejects the expired JWT.
+- HTTP status code is 403 Forbidden.
+- Response is returned in JSON format.
+- Error code is `bad_jwt`.
+- Error message indicates that the token is expired.
+- User ID and email are not returned.
+- Protected user information is inaccessible.
+
+## Actual Results
+
+**HTTP Status:** 403 Forbidden
+
+**Response Body:**
+```json
+{
+  "code": 403,
+  "error_code": "bad_jwt",
+  "msg": "invalid JWT: unable to parse or verify signature, token has invalid claims: token is expired"
+}
+```
+
+The API correctly rejected the expired Access Token and denied access to the protected endpoint.
+
+## Post-response Tests
+- Verify HTTP status code is 403.
+- Verify response is JSON.
+- Verify error code is `bad_jwt`.
+- Verify error message indicates an expired token.
+- Verify user ID is not returned.
+- Verify user email is not returned.
+
+## Test Result
+**PASS** – The API correctly identified the expired JWT and prevented access to protected user information.
+
+## Security Notes
+This test verifies JWT expiration handling and ensures that expired authentication credentials cannot be used to access protected resources.
+
+It complements:
+- **TC24** – Get User with Valid Bearer Token
+- **TC25** – Access Protected Resource Without Token
+- **TC26** – Access Resource with Invalid JWT
+
+**Note:** The observed HTTP status code and error response reflect the behavior of the tested Supabase Auth endpoint.
 
 
 TC30 — Logout and Session Revocation
