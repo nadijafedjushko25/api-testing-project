@@ -457,6 +457,98 @@ TC24 verifies access using a valid Bearer Token, while TC25 verifies that access
 
 Together, these test cases cover both positive and negative Bearer Token authentication scenarios.
 
+# TC26 – Access Resource with Invalid JWT
+
+## Test Case ID
+AUTH-005
+
+## Title
+Access Protected Resource with Invalid JWT
+
+## Module
+Authentication & Token Lifecycle
+
+## Category
+Authentication / Security Testing
+
+## Priority
+High
+
+## Status
+PASS
+
+## Objective
+Verify that the API rejects an invalid JWT and prevents unauthorized access to a protected resource.
+
+## Preconditions
+- A Supabase project is configured.
+- A valid Supabase API key is available.
+- The `/auth/v1/user` endpoint requires a valid Bearer Token.
+
+## Request Details
+
+**Method:** GET
+
+**Endpoint:**
+```text
+{{baseUrl}}/auth/v1/user
+```
+
+**Authorization:** No Auth
+
+### Headers
+
+| Key | Value |
+|---|---|
+| apikey | {{apiKey}} |
+| Authorization | Bearer invalid.jwt.token |
+
+**Request Body:** None
+
+## Test Steps
+1. Open the Postman request for TC26.
+2. Set the HTTP method to GET.
+3. Enter the `/auth/v1/user` endpoint.
+4. Add the `apikey` header with the Supabase API key.
+5. Add the Authorization header with the invalid JWT: `Bearer invalid.jwt.token`.
+6. Send the request.
+7. Verify the response status and error details.
+8. Execute the Post-response assertions.
+
+## Expected Results
+- API returns HTTP status code **401 Unauthorized**.
+- Response is returned in JSON format.
+- Authentication error code is present.
+- User ID is not returned.
+- An error message is returned.
+- Protected user information is not accessible.
+
+## Actual Results
+- API rejected the invalid JWT.
+- HTTP status code: **401 Unauthorized**.
+- Response was returned in JSON format.
+- Authentication error details were present.
+- User ID was not returned.
+- Access to the protected endpoint was denied.
+
+## Post-response Tests
+- Verify HTTP status code is 401.
+- Verify response content type is JSON.
+- Verify authentication error code is present.
+- Verify user ID is not returned.
+- Verify an error message is present.
+
+## Test Result
+**PASS** – The API correctly rejected the invalid JWT and prevented unauthorized access to the protected user endpoint.
+
+## Security Notes
+This test verifies that the API does not accept a malformed or invalid JWT as valid authentication credentials.
+
+It complements:
+- **TC24** – Get User with Valid Bearer Token
+- **TC25** – Access Protected Resource Without Token
+
+**Note:** This test checks an invalid JWT. An expired but otherwise valid JWT is covered separately in TC27.
 
 
 
