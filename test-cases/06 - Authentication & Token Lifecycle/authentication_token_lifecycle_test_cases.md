@@ -343,6 +343,122 @@ This test verifies Bearer Token Authentication and confirms that the Access Toke
 
 TC22 verifies successful login and token generation, while TC24 verifies successful token usage.
 
+# TC25 — Access Protected Resource Without Token
+
+**Test Case ID:** AUTH-004  
+**Priority:** High  
+**Category:** Authentication / Security Testing  
+**Status:** PASS
+
+## Objective
+
+Verify that the Supabase Auth API denies access to a protected endpoint when a request does not contain an Authorization Bearer Token.
+
+## Preconditions
+
+- Supabase project is available.
+- Supabase API key is configured in Postman Environment.
+- The endpoint `/auth/v1/user` is available.
+- No Authorization header is included in the request.
+
+## Request Details
+
+**Method:** GET
+
+**Endpoint:**
+```text
+{{baseUrl}}/auth/v1/user
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | {{apiKey}} |
+
+**Authorization:** No Auth
+
+**Request Body:** None
+
+**Important:** The Authorization header must be completely omitted from the request.
+
+## Expected Result
+
+- API returns HTTP 401 Unauthorized.
+- Response is valid JSON.
+- Error code is `no_authorization`.
+- Error message indicates that a valid Bearer Token is required.
+- JSON response code is 401.
+
+## Post-response Tests
+
+```javascript
+// Parse the JSON error response
+// Отримуємо JSON-відповідь із помилкою
+let jsonData = pm.response.json();
+
+// Verify that access is denied
+// Перевіряємо, що API заборонив доступ
+pm.test("Status code is 401", function () {
+    pm.response.to.have.status(401);
+});
+
+// Verify that the response is JSON
+// Перевіряємо, що відповідь має формат JSON
+pm.test("Response is JSON", function () {
+    pm.response.to.be.json;
+});
+
+// Verify the authentication error code
+// Перевіряємо код помилки автентифікації
+pm.test("Error code is no_authorization", function () {
+    pm.expect(jsonData.error_code).to.eql("no_authorization");
+});
+
+// Verify the error message
+// Перевіряємо повідомлення про відсутність Bearer Token
+pm.test("Missing Bearer Token message is returned", function () {
+    pm.expect(jsonData.msg).to.eql(
+        "This endpoint requires a valid Bearer token"
+    );
+});
+
+// Verify the response code in the JSON body
+// Перевіряємо код помилки безпосередньо в JSON Body
+pm.test("Response body code is 401", function () {
+    pm.expect(jsonData.code).to.eql(401);
+});
+```
+
+## Actual Result
+
+**HTTP Status:** 401 Unauthorized
+
+**Response Body:**
+```json
+{
+    "code": 401,
+    "error_code": "no_authorization",
+    "msg": "This endpoint requires a valid Bearer token"
+}
+```
+
+**Test Results:** 5/5 assertions passed.
+
+**Final Status:** PASS
+
+## Notes
+
+The API correctly rejected the request because no Authorization Bearer Token was provided.
+
+This test verifies that the protected authentication endpoint does not allow unauthenticated access.
+
+TC24 verifies access using a valid Bearer Token, while TC25 verifies that access is denied when the token is missing.
+
+Together, these test cases cover both positive and negative Bearer Token authentication scenarios.
+
+
+
 
 TC30 — Logout and Session Revocation
 
