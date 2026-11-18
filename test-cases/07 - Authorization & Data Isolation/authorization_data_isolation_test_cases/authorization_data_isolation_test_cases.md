@@ -247,3 +247,96 @@ The test passed successfully. The authenticated user was able to access their ow
 The RLS policy using `auth.uid() = user_id` correctly allowed access to the record belonging to the authenticated user.
 
 **Note:** This test verifies access to the user's own data. Cross-user data isolation will be tested separately in TC34.
+
+# TC34 – User Cannot Access Another User's Data
+
+**Test Case ID:** AUTHZ-004  
+**Category:** Authorization & Data Isolation  
+**Priority:** High  
+**Type:** Negative Testing  
+**Status:** PASS
+
+## Objective
+Verify that an authenticated user cannot access records belonging to another user through the Supabase REST API.
+
+The test validates Row Level Security (RLS) and ensures that users can only retrieve records associated with their own user ID.
+
+## Preconditions
+- Supabase project is configured.
+- Table `qa_user_data_test` exists.
+- RLS is enabled on the table.
+- Authenticated users have SELECT permission.
+- RLS policy restricts access using `auth.uid() = user_id`.
+- Two test users exist in Supabase Authentication.
+- Each user has a separate test record in `qa_user_data_test`.
+- A valid access token for User 1 is available.
+
+## Test Data
+
+| Field | User 1 | User 2 |
+|---|---|---|
+| User ID | `2d8f9dc6-68bc-4a18-8db1-9bead4420417` | `4805b7ca-d2f5-4c43-86e9-04e9314803ca` |
+| Test data | TC33 - User 1 private test record | TC34 - User 2 private test record |
+
+## Request Details
+
+**Method:** GET
+
+**Endpoint:**
+```http
+{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | `{{apiKey}}` |
+| Authorization | `Bearer {{accessToken}}` |
+
+**Authenticated user:** User 1
+
+## Expected Result
+- HTTP status code: `200 OK`.
+- Response body is a valid JSON array.
+- User 1 can access their own record.
+- All returned records belong to User 1.
+- User 2's private record is not included in the response.
+- No data belonging to another user is exposed.
+
+## Actual Result
+
+**HTTP Status:** `200 OK`
+
+**Response Body:**
+```json
+[
+    {
+        "id": 1,
+        "user_id": "2d8f9dc6-68bc-4a18-8db1-9bead4420417",
+        "test_data": "TC33 - User 1 private test record"
+    }
+]
+```
+
+The API returned only User 1's record. User 2's record was not exposed.
+
+## Postman Test Results
+**6/6 assertions passed.**
+
+- Status code is 200 OK.
+- Response is valid JSON.
+- Response is an array.
+- User 1 can access their own record.
+- All returned records belong to User 1.
+- User 2's private record is not exposed.
+
+## Conclusion
+The test passed successfully.
+
+The RLS policy correctly restricts data access based on the authenticated user's UUID. User 1 can retrieve their own record but cannot see User 2's record.
+
+This confirms user-level data isolation for the tested SELECT endpoint.
+
+**Security Note:** This test validates RLS-based data isolation for SELECT operations. It does not cover every possible BOLA/IDOR scenario or other HTTP methods.
+
