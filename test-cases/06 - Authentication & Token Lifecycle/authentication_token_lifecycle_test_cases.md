@@ -232,6 +232,116 @@ The API correctly rejected the login attempt with invalid credentials. No authen
 
 This test verifies negative authentication behavior and error response handling.
 
+# TC24 — Get User with Valid Bearer Token
+
+**Test Case ID:** AUTH-003  
+**Priority:** High  
+**Category:** Authentication  
+**Status:** PASS
+
+## Objective
+
+Verify that an authenticated user can access the Supabase Auth endpoint using a valid Access Token and retrieve their own user information.
+
+## Preconditions
+
+- Supabase project is available.
+- A registered and confirmed user exists.
+- Valid login credentials are configured in Postman Environment.
+- A successful login has been performed using TC22.
+- A valid Access Token is stored in the Postman Environment as `accessToken`.
+- Supabase API key is available.
+
+## Request Details
+
+**Method:** GET
+
+**Endpoint:**
+```text
+{{baseUrl}}/auth/v1/user
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | {{apiKey}} |
+| Authorization | Bearer {{accessToken}} |
+
+**Authorization:** No Auth (Bearer Token is passed manually in Headers).
+
+**Request Body:** None
+
+## Expected Result
+
+- API returns HTTP 200 OK.
+- Response is valid JSON.
+- User ID is present and not empty.
+- Returned email matches the authenticated user's email.
+- User role is `authenticated`.
+- User is not anonymous (`is_anonymous` is `false`).
+
+## Post-response Tests
+
+```javascript
+// Parse the JSON response
+// Отримуємо JSON-відповідь від API
+let jsonData = pm.response.json();
+
+// Verify that the request was successful
+// Перевіряємо, що запит виконано успішно
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+// Verify that the response is JSON
+// Перевіряємо, що відповідь має формат JSON
+pm.test("Response is JSON", function () {
+    pm.response.to.be.json;
+});
+
+// Verify that the user ID is present
+// Перевіряємо, що відповідь містить ID користувача
+pm.test("User ID is present", function () {
+    pm.expect(jsonData.id).to.be.a("string").and.not.empty;
+});
+
+// Verify that the email matches the logged-in user
+// Перевіряємо, що email відповідає авторизованому користувачу
+pm.test("User email matches login email", function () {
+    pm.expect(jsonData.email).to.eql(
+        pm.environment.get("loginEmail")
+    );
+});
+
+// Verify that the user role is authenticated
+// Перевіряємо, що роль користувача — authenticated
+pm.test("User role is authenticated", function () {
+    pm.expect(jsonData.role).to.eql("authenticated");
+});
+
+// Verify that the user is not anonymous
+// Перевіряємо, що користувач не є анонімним
+pm.test("User is not anonymous", function () {
+    pm.expect(jsonData.is_anonymous).to.eql(false);
+});
+```
+
+## Actual Result
+
+**HTTP Status:** 200 OK
+
+**Test Results:** 6/6 assertions passed.
+
+**Final Status:** PASS
+
+## Notes
+
+The API successfully accepted the valid Bearer Access Token and returned the authenticated user's information.
+
+This test verifies Bearer Token Authentication and confirms that the Access Token can be used to access a protected authentication endpoint.
+
+TC22 verifies successful login and token generation, while TC24 verifies successful token usage.
 
 
 TC30 — Logout and Session Revocation
