@@ -181,3 +181,69 @@ The API correctly distinguishes anonymous and authenticated access based on the 
 This test verifies role-based access differences. The authenticated SELECT policy uses `USING (true)` on a dedicated test table, allowing all authenticated users to read its records.
 
 This setup demonstrates authenticated access but does not verify record-level isolation between different users (BOLA/IDOR testing).
+
+# TC33 – User Can Access Own Data
+
+**Test Case ID:** AUTHZ-003  
+**Category:** Authorization & Data Isolation  
+**Priority:** High  
+**Type:** Positive Testing  
+**Status:** PASS
+
+## Objective
+Verify that an authenticated user can access their own records through the Supabase REST API, based on Row Level Security (RLS) policies.
+
+## Preconditions
+- Supabase project is configured.
+- Table `qa_user_data_test` exists.
+- RLS is enabled on the table.
+- Authenticated users have SELECT permission.
+- RLS policy allows users to read records where `auth.uid() = user_id`.
+- A test record exists and is assigned to the authenticated user's UUID.
+- A valid access token is available.
+
+## Request Details
+
+**Method:** GET
+
+**Endpoint:**
+```http
+{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data
+```
+
+**Headers:**
+| Key | Value |
+|---|---|
+| apikey | `{{apiKey}}` |
+| Authorization | `Bearer {{accessToken}}` |
+
+## Test Data
+
+| Field | Value |
+|---|---|
+| user_id | `2d8f9dc6-68bc-4a18-8db1-9bead4420417` |
+| test_data | `TC33 - User 1 private test record` |
+
+## Expected Result
+- HTTP status code: `200 OK`
+- Response body is a valid JSON array.
+- The authenticated user can retrieve their own record.
+- Every returned record belongs to the authenticated user.
+- The record contains the expected test data.
+
+## Actual Result
+- HTTP status: `200 OK`
+- The API returned the user's own test record.
+- The returned `user_id` matched the authenticated user's UUID.
+- The expected test data was returned.
+- All 6 Postman assertions passed.
+
+## Postman Test Results
+**6/6 assertions passed.**
+
+## Conclusion
+The test passed successfully. The authenticated user was able to access their own record.
+
+The RLS policy using `auth.uid() = user_id` correctly allowed access to the record belonging to the authenticated user.
+
+**Note:** This test verifies access to the user's own data. Cross-user data isolation will be tested separately in TC34.
