@@ -111,6 +111,129 @@ Test Execution Result: PASS — 7/7 assertions passed.
 
 Notes: Email confirmation is required for the tested account. Tokens must not be included in public documentation or screenshots.
 
+# TC23 — Login with Invalid Credentials
+
+**Test Case ID:** AUTH-002  
+**Priority:** High  
+**Category:** Authentication  
+**Status:** PASS
+
+## Objective
+
+Verify that the API rejects login attempts when a user provides invalid credentials and does not issue authentication tokens.
+
+## Preconditions
+
+- Supabase project is available.
+- A registered user exists.
+- Valid `loginEmail` is configured in Postman Environment.
+- An intentionally incorrect `wrongPassword` is configured.
+- Supabase API key is available.
+
+## Request Details
+
+**Method:** POST
+
+**Endpoint:**
+```text
+{{baseUrl}}/auth/v1/token?grant_type=password
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | {{apiKey}} |
+| Content-Type | application/json |
+
+**Authorization:** No Auth
+
+**Request Body:**
+```json
+{
+  "email": "{{loginEmail}}",
+  "password": "{{wrongPassword}}"
+}
+```
+
+## Expected Result
+
+- API returns HTTP 400 Bad Request.
+- Error code is `invalid_credentials`.
+- Error message is `Invalid login credentials`.
+- No Access Token is returned.
+- No Refresh Token is returned.
+- Response is valid JSON.
+
+## Post-response Tests
+
+```javascript
+// Parse the JSON response
+// Отримуємо JSON-відповідь від API
+let jsonData = pm.response.json();
+
+// Verify that login was rejected
+// Перевіряємо, що API відхилив авторизацію
+pm.test("Status code is 400", function () {
+    pm.response.to.have.status(400);
+});
+
+// Verify the error code
+// Перевіряємо код помилки авторизації
+pm.test("Error code is invalid_credentials", function () {
+    pm.expect(jsonData.error_code).to.eql("invalid_credentials");
+});
+
+// Verify the error message
+// Перевіряємо повідомлення про неправильні облікові дані
+pm.test("Invalid credentials message is returned", function () {
+    pm.expect(jsonData.msg).to.eql("Invalid login credentials");
+});
+
+// Verify that no access token is returned
+// Перевіряємо, що Access Token не повертається
+pm.test("Access token is not returned", function () {
+    pm.expect(jsonData).to.not.have.property("access_token");
+});
+
+// Verify that no refresh token is returned
+// Перевіряємо, що Refresh Token не повертається
+pm.test("Refresh token is not returned", function () {
+    pm.expect(jsonData).to.not.have.property("refresh_token");
+});
+
+// Verify that the response is JSON
+// Перевіряємо, що відповідь має формат JSON
+pm.test("Response is JSON", function () {
+    pm.response.to.be.json;
+});
+```
+
+## Actual Result
+
+**HTTP Status:** 400 Bad Request
+
+**Response:**
+```json
+{
+  "code": 400,
+  "error_code": "invalid_credentials",
+  "msg": "Invalid login credentials"
+}
+```
+
+**Test Results:** 6/6 assertions passed.
+
+**Final Status:** PASS
+
+## Notes
+
+The API correctly rejected the login attempt with invalid credentials. No authentication tokens were issued.
+
+This test verifies negative authentication behavior and error response handling.
+
+
+
 TC30 — Logout and Session Revocation
 
 PASS
