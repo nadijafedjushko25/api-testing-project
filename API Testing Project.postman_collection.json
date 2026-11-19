@@ -1,0 +1,2913 @@
+{
+  "info": {
+    "_postman_id": "d0c534e3-666b-463f-9119-a9506d0899f2",
+    "name": "API Testing Project",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "13809783",
+    "_collection_link": "https://go.postman.co/collection/13809783-d0c534e3-666b-463f-9119-a9506d0899f2?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "01 - HTTP Methods",
+      "item": [
+        {
+          "name": "HTTP-001 – Retrieve a Post Successfully",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response contains required fields\", function () {\n    const jsonData = pm.response.json();\n\n    pm.expect(jsonData).to.have.property(\"userId\");\n    pm.expect(jsonData).to.have.property(\"id\");\n    pm.expect(jsonData).to.have.property(\"title\");\n    pm.expect(jsonData).to.have.property(\"body\");\n});\n\npm.test(\"Post ID is 1\", function () {\n    const jsonData = pm.response.json();\n\n    pm.expect(jsonData.id).to.eql(1);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-002 – Retrieve a User Successfully",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function (){\n    pm.response.to.have.status(200); \n});\n\npm.test(\"User ID is 1\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.id).to.eql(1);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"User contains required fields\", function () {\n    const jsonData = pm.response.json();\n\n    pm.expect(jsonData).to.have.property(\"id\");\n    pm.expect(jsonData).to.have.property(\"name\");\n    pm.expect(jsonData).to.have.property(\"username\");\n    pm.expect(jsonData).to.have.property(\"email\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/users/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "users",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-003 – Create a Post Successfully",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 201\", function () {\n    pm.response.to.have.status(201);\n});\n\npm.test(\"Response contains correct title\", function () {\n    const data = pm.response.json();\n    pm.expect(data.title).to.eql(\"My first API test\");\n});\n\npm.test(\"Response contains userId\", function () {\n    const data = pm.response.json();\n    pm.expect(data.userId).to.eql(1);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"My first API test\",\n  \"body\": \"Learning Postman\",\n  \"userId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-004 – Partially Update a Post Successfully",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response contains updated title\", function () {\n    const data = pm.response.json();\n    pm.expect(data.title).to.eql(\"Updated title\");\n});\n\npm.test(\"Post ID is 1\", function () {\n    const data = pm.response.json();\n    pm.expect(data.id).to.eql(1);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"title\": \"Updated title\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-005 – Delete a Post Successfully",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response time is less than 2000 ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.below(2000);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/1",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "1"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-006 – Retrieve a Non-Existing Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response body is an empty object\", function () {\n    const data = pm.response.json();\n    pm.expect(data).to.be.an(\"object\");\n    pm.expect(data).to.be.empty;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/9999",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "9999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-007 – Create a Post with Missing Title",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"API accepts post without title (no validation on fake service)\", function () {\n    pm.response.to.have.status(201);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response does not contain title\", function () {\n    const data = pm.response.json();\n    pm.expect(data).to.not.have.property(\"title\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"body\": \"Testing a post without title\",\n  \"userId\": 1\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-008 — Retrieve a Post with Invalid ID",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Invalid post ID returns 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response body is an empty object\", function () {\n    const data = pm.response.json();\n    pm.expect(data).to.be.an(\"object\");\n    pm.expect(data).to.be.empty;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/abc",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "abc"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-009 – Create a Post with Empty Body",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"API accepts empty body without validation (fake service)\", function () {\n    pm.response.to.have.status(201);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.json();\n});\n\npm.test(\"Response contains generated id, no validation error returned\", function () {\n    const data = pm.response.json();\n    pm.expect(data).to.have.property(\"id\");\n    pm.expect(data).to.not.have.property(\"error\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-010 – Update a Non-Existing Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"API returns 200 for update of non-existing post (no existence check, fake service)\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.json();\n});\n\npm.test(\"Response contains the submitted title\", function () {\n    const data = pm.response.json();\n    pm.expect(data.title).to.eql(\"Updated non-existing post\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"title\": \"Updated non-existing post\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/9999",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "9999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-011 – Delete a Non-Existing Post",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"API returns 200 for delete of non-existing post (no existence check, fake service)\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.json();\n});\n\npm.test(\"Response body is an empty object\", function () {\n    pm.expect(pm.response.json()).to.eql({});\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/posts/9999",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "posts",
+                "9999"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "HTTP-012 – Retrieve a Post with Invalid Endpoint",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Invalid endpoint returns 404\", function () {\n    pm.response.to.have.status(404);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response body is an empty object\", function () {\n    const data = pm.response.json();\n    pm.expect(data).to.eql({});\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://jsonplaceholder.typicode.com/invalid-endpoint",
+              "protocol": "https",
+              "host": [
+                "jsonplaceholder",
+                "typicode",
+                "com"
+              ],
+              "path": [
+                "invalid-endpoint"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "02 - User Registration",
+      "item": [
+        {
+          "name": "TC01-Successful Registration",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response contains user ID\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.id).to.be.a(\"string\").and.not.empty;\n});\n\npm.test(\"Response contains correct email\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.email).to.include(\"api.testing.\");\n    pm.expect(user.email).to.include(\"@yopmail.com\");\n});\n\npm.test(\"User role is authenticated\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.role).to.eql(\"authenticated\");\n});\n\npm.test(\"Email is confirmed automatically\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.email_confirmed_at).to.be.a(\"string\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api.testing.{{$timestamp}}@yopmail.com\",\n  \"password\": \"{{testPassword}}\",\n  \"data\": {\n    \"name\": \"Anna\"\n  }\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC02-Password Less Than Minimum Length",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 422 Unprocessable Entity\", function () {\n    pm.response.to.have.status(422);\n});\n\npm.test(\"Response contains an error message\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.msg || jsonData.message || jsonData.error_description)\n        .to.be.a(\"string\").and.not.empty;\n});\n\npm.test(\"Registration is rejected\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.id).to.be.undefined;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api.testing.qa1211@yopmail.com\",\n  \"password\": \"Qa1!a\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC03-Password Exactly 6 Characters",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response contains user ID\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.id).to.be.a(\"string\").and.not.empty;\n});\n\npm.test(\"Response contains correct email\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.email).to.include(\"api.testing.\");\n    pm.expect(user.email).to.include(\"@yopmail.com\");\n});\n\npm.test(\"User role is authenticated\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.role).to.eql(\"authenticated\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api.testing.{{$timestamp}}@yopmail.com\",\n  \"password\": \"Qa1!aB\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC04 – Password Greater Than Minimum Length",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response contains user ID\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.id).to.be.a(\"string\").and.not.empty;\n});\n\npm.test(\"Response contains correct email\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.email).to.include(\"api.testing.\");\n    pm.expect(user.email).to.include(\"@yopmail.com\");\n});\n\npm.test(\"User role is authenticated\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.role).to.eql(\"authenticated\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api.testing.{{$timestamp}}@yopmail.com\",\n  \"password\": \"{{longTestPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC05 – Registration with Already Registered Email",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Response status is not a server error\", function () {\n    pm.expect(pm.response.code).to.be.below(500);\n});\n\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api.testing.qa1311@yopmail.com\",\n  \"password\": \"QaTest2026!Secure\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC06 – Registration with Invalid Email Format",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"API rejects invalid email format\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.error_code).to.eql(\"validation_failed\");\n    pm.expect(response.msg).to.include(\"invalid format\");\n});\n\npm.test(\"Registration is not successful\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(400);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"test@\",\n  \"password\": \"QaTest2026!Secure\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC07 – Registration with Empty Password",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify API rejects empty password\npm.test(\"API rejects empty password\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.error_code).to.eql(\"validation_failed\");\n    pm.expect(response.msg).to.include(\"valid password\");\n});\n\n// 4. Verify registration is rejected\npm.test(\"Registration is not successful\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(400);\n});\n\n// 5. Verify response time is recorded\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.above(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api.testing.qa1111@yopmail.comest@\",\n  \"password\": \"\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "03 - Security Testing",
+      "item": [
+        {
+          "name": "TC08 – Registration Without API Key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 401 Unauthorized\", function () {\n    pm.response.to.have.status(401);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify API rejects request without API key\npm.test(\"API rejects request when API key is missing\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.message).to.eql(\"No API key found in request\");\n});\n\n// 4. Verify response contains missing API key hint\npm.test(\"Response contains missing API key hint\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.hint).to.include(\"apikey\");\n});\n\n// 5. Verify response time is recorded\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}",
+                "disabled": true
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"api.testing.qa1111@yopmail.comest@\",\n  \"password\": \"Qa1!aB\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/signup",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "signup"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC09 – SQL Injection Testing",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"API returns exactly 3 test records\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.be.an(\"array\");\n    pm.expect(response).to.have.lengthOf(3);\n});\n\npm.test(\"Expected test records are returned\", function () {\n    const response = pm.response.json();\n    const names = response.map(item => item.product_name);\n\n    pm.expect(names).to.include.members([\n        \"Laptop\",\n        \"Keyboard\",\n        \"Monitor\"\n    ]);\n});\n\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name,description",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name,description"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC09.1 – SQL Injection – Filter Payload",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.be.an(\"array\");\n});\n\n// 4. Verify SQL-like input does not bypass filtering\npm.test(\"SQL injection payload does not return all records\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.have.lengthOf(0);\n});\n\n// 5. Verify no test records are exposed\npm.test(\"No unexpected test records are returned\", function () {\n    const response = pm.response.json();\n    const names = response.map(item => item.product_name);\n\n    pm.expect(names).to.not.include(\"Laptop\");\n    pm.expect(names).to.not.include(\"Keyboard\");\n    pm.expect(names).to.not.include(\"Monitor\");\n});\n\n// 6. Verify response time is recorded\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name,description&product_name=eq.%27%20OR%20%271%27%3D%271",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name,description"
+                },
+                {
+                  "key": "product_name",
+                  "value": "eq.%27%20OR%20%271%27%3D%271"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC10 – Unauthorized Insert (Insufficient Table Privileges)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 401 Unauthorized\", function () {\n    pm.response.to.have.status(401);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify insert is rejected due to insufficient privileges\npm.test(\"API rejects unauthorized INSERT operation\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(\"42501\");\n    pm.expect(response.message).to.include(\n        \"permission denied for table qa_sql_injection_test\"\n    );\n});\n\n// 4. Verify database access restriction\npm.test(\"INSERT permission is not granted to anon role\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.hint).to.include(\"GRANT INSERT\");\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"TC10 Unauthorized Insert\",\n  \"description\": \"This record should not be inserted\"\n}\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC11 - RLS – Unauthorized Data Access",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.be.an(\"array\");\n});\n\n// 4. Verify RLS blocks access to protected records\npm.test(\"RLS prevents anon access to protected records\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.have.lengthOf(0);\n});\n\n// 5. Verify no protected data is exposed\npm.test(\"No restricted records are exposed\", function () {\n    const response = pm.response.json();\n\n    const names = response.map(item => item.record_name);\n\n    pm.expect(names).to.not.include(\"QA Record 1\");\n    pm.expect(names).to.not.include(\"QA Record 2\");\n    pm.expect(names).to.not.include(\"QA Record 3\");\n});\n\n// 6. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "\n",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_rls_protected_test?select=*",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_rls_protected_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "*"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "04 - API Validation & Error Handling",
+      "item": [
+        {
+          "name": "TC12 – Invalid Query Filter Syntax",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify API returns filter parsing error\npm.test(\"API returns invalid filter syntax error\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(\"PGRST100\");\n});\n\n// 4. Verify error message describes invalid filter\npm.test(\"Response contains filter parsing details\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.message).to.include(\"failed to parse filter\");\n    pm.expect(response.message).to.include(\"badoperator\");\n    pm.expect(response.details).to.include(\"unexpected\");\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&id=badoperator.1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "id",
+                  "value": "badoperator.1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC13 – Invalid Query Parameter Data Type",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify invalid data type error\npm.test(\"API rejects invalid data type\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(\"22P02\");\n});\n\n// 4. Verify error message\npm.test(\"Response contains invalid bigint message\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.message).to.include(\n        \"invalid input syntax for type bigint\"\n    );\n    pm.expect(response.message).to.include(\"not-a-number\");\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&id=eq.not-a-number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "id",
+                  "value": "eq.not-a-number"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC14 – Unsupported Content-Type Header",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify unsupported Content-Type error\npm.test(\"API rejects unsupported Content-Type\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(\"PGRST102\");\n});\n\n// 4. Verify error message\npm.test(\"Response identifies unsupported media type\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.message)\n        .to.include(\"Content-Type not acceptable\");\n    pm.expect(response.message)\n        .to.include(\"text/plain\");\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "text/plain"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"TC14 Unsupported Content Type\",\n  \"description\": \"Testing unsupported media type\"\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ТС15 - Malformed JSON Request Body",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify malformed JSON is rejected\npm.test(\"API rejects malformed JSON body\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(\"PGRST102\");\n});\n\n// 4. Verify error message describes invalid request body\npm.test(\"Response contains JSON parsing error details\", function () {\n    const response = pm.response.json();\n\n    const errorText = [\n        response.message,\n        response.details,\n        response.hint\n    ].filter(Boolean).join(\" \").toLowerCase();\n\n    pm.expect(errorText).to.match(\n        /json|body|parse|syntax|invalid|unexpected/\n    );\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"product_name\": \"TC15 Malformed JSON\"\n  \"description\": \"Missing comma between fields\"\n}",
+              "options": {
+                "raw": {
+                  "language": "text"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC16 – Non-existent API Endpoint",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 404\", function () {\n    pm.response.to.have.status(404);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify API returns resource not found error\npm.test(\"API returns PGRST205 error\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.code).to.eql(\"PGRST205\");\n});\n\n// 4. Verify error message identifies missing table\npm.test(\"Response identifies non-existent table\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.message).to.include(\n        \"Could not find the table\"\n    );\n    pm.expect(response.message).to.include(\n        \"public.qa_nonexistent_endpoint\"\n    );\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_nonexistent_endpoint?select=*",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_nonexistent_endpoint"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "*"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "05 - Filtering, Sorting & Pagination",
+      "item": [
+        {
+          "name": "TC17 – Filter by Exact Value",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.be.an(\"array\");\n});\n\n// 4. Verify exact value filtering\npm.test(\"API returns only the matching record\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.have.lengthOf(1);\n    pm.expect(response[0].id).to.eql(1);\n    pm.expect(response[0].product_name).to.eql(\"Laptop\");\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&product_name=eq.Laptop",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "product_name",
+                  "value": "eq.Laptop"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC18 – Filter by Comparison Operator",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// 4. Verify comparison filter returns correct records\npm.test(\"API returns only records with ID greater than 1\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.have.lengthOf(2);\n    pm.expect(response.map(item => item.id)).to.eql([2, 3]);\n    pm.expect(response.map(item => item.product_name))\n        .to.eql([\"Keyboard\", \"Monitor\"]);\n\n    response.forEach(item => {\n        pm.expect(item.id).to.be.above(1);\n    });\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&id=gt.1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "id",
+                  "value": "gt.1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC19 – Sort Records (Ascending)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// 4. Verify ascending alphabetical order\npm.test(\"Records are sorted alphabetically ASC\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.map(item => item.product_name))\n        .to.eql([\"Keyboard\", \"Laptop\", \"Monitor\"]);\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&order=product_name.asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "order",
+                  "value": "product_name.asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC19.1 - Sort Records(Descending)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// 4. Verify descending alphabetical order\npm.test(\"Records are sorted alphabetically DESC\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.map(item => item.product_name))\n        .to.eql([\"Monitor\", \"Laptop\", \"Keyboard\"]);\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&order=product_name.desc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "order",
+                  "value": "product_name.desc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC20 – Limit Number of Records",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// 4. Verify record limit\npm.test(\"API returns exactly 2 records\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.have.lengthOf(2);\n});\n\n// 5. Verify the correct records are returned\npm.test(\"API returns the first 2 records in ascending ID order\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response.map(item => item.id)).to.eql([1, 2]);\n\n    pm.expect(response.map(item => item.product_name))\n        .to.eql([\"Laptop\", \"Keyboard\"]);\n});\n\n// 6. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&order=id.asc&limit=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "order",
+                  "value": "id.asc"
+                },
+                {
+                  "key": "limit",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC21 – Pagination with Offset",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// 4. Verify first page contains correct records\npm.test(\"Page 1 returns records with IDs 1 and 2\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.have.lengthOf(2);\n    pm.expect(response.map(item => item.id)).to.eql([1, 2]);\n    pm.expect(response.map(item => item.product_name))\n        .to.eql([\"Laptop\", \"Keyboard\"]);\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&order=id.asc&limit=2&offset=0",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "order",
+                  "value": "id.asc"
+                },
+                {
+                  "key": "limit",
+                  "value": "2"
+                },
+                {
+                  "key": "offset",
+                  "value": "0"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC21 – Pagination – Page 2",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// 1. Verify HTTP status code\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// 2. Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify response is an array\npm.test(\"Response is an array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// 4. Verify second page contains correct record\npm.test(\"Page 2 returns record with ID 3\", function () {\n    const response = pm.response.json();\n\n    pm.expect(response).to.have.lengthOf(1);\n    pm.expect(response[0].id).to.eql(3);\n    pm.expect(response[0].product_name).to.eql(\"Monitor\");\n});\n\n// 5. Verify response time\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n    pm.expect(pm.response.responseTime).to.be.at.least(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&order=id.asc&limit=2&offset=2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "order",
+                  "value": "id.asc"
+                },
+                {
+                  "key": "limit",
+                  "value": "2"
+                },
+                {
+                  "key": "offset",
+                  "value": "2"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "06 - Authentication & Token Lifecycle",
+      "item": [
+        {
+          "name": "TC22 - Login with Valid Credentials",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.environment.unset(\"accessToken\");\npm.environment.unset(\"refreshToken\");"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "let jsonData = pm.response.json();\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Access token is present\", function () {\n    pm.expect(jsonData.access_token).to.be.a(\"string\").and.not.empty;\n});\n\npm.test(\"Refresh token is present\", function () {\n    pm.expect(jsonData.refresh_token).to.be.a(\"string\").and.not.empty;\n});\n\npm.test(\"Token type is Bearer\", function () {\n    pm.expect(jsonData.token_type).to.eql(\"bearer\");\n});\n\npm.test(\"User email matches login email\", function () {\n    pm.expect(jsonData.user.email.toLowerCase())\n        .to.eql(pm.environment.get(\"loginEmail\").toLowerCase());\n});\n\npm.test(\"Access token expiration is valid\", function () {\n    pm.expect(jsonData.expires_in).to.be.a(\"number\").and.above(0);\n});\n\nif (pm.response.code === 200 &&\n    jsonData.access_token &&\n    jsonData.refresh_token) {\n\n    pm.environment.set(\"accessToken\", jsonData.access_token);\n    pm.environment.set(\"refreshToken\", jsonData.refresh_token);\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{loginEmail}}\",\n  \"password\": \"{{loginPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/token?grant_type=password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC23 - Login with Invalid Credentials",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  ""
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Verify that login with an incorrect password is rejected\n// Перевіряємо, що вхід із неправильним паролем відхилено\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// Verify that the response uses JSON format\n// Перевіряємо, що відповідь має формат JSON\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Parse the JSON response safely\n// Безпечно розбираємо JSON-відповідь\nlet jsonData = {};\n\ntry {\n    jsonData = pm.response.json();\n} catch (error) {\n    console.log(\"Response is not valid JSON\");\n}\n\n// Verify that Supabase returns the invalid credentials error\n// Перевіряємо, що Supabase повертає помилку неправильних облікових даних\npm.test(\"Invalid credentials error is returned\", function () {\n    pm.expect(jsonData.error_code).to.eql(\"invalid_credentials\");\n});\n\n// Verify that the error message indicates invalid login credentials\n// Перевіряємо, що повідомлення вказує на неправильні дані для входу\npm.test(\"Error message is correct\", function () {\n    pm.expect(jsonData.msg).to.include(\"Invalid login credentials\");\n});\n\n// Verify that no access token is returned\n// Перевіряємо, що Access Token не повертається\npm.test(\"Access token is not returned\", function () {\n    pm.expect(jsonData.access_token).to.be.undefined;\n});\n\n// Verify that no refresh token is returned\n// Перевіряємо, що Refresh Token не повертається\npm.test(\"Refresh token is not returned\", function () {\n    pm.expect(jsonData.refresh_token).to.be.undefined;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer"
+            },
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"{{loginEmail}}\",\n  \"password\": \"DefinitelyWrongPassword_123!\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/token?grant_type=password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC24 - Get User with Valid Bearer Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON response\n// Отримуємо JSON-відповідь від API\nlet jsonData = pm.response.json();\n\n// Verify that the request was successful\n// Перевіряємо, що запит виконано успішно\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify that the response is JSON\n// Перевіряємо, що відповідь має формат JSON\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Verify that the user ID is present\n// Перевіряємо, що відповідь містить ID користувача\npm.test(\"User ID is present\", function () {\n    pm.expect(jsonData.id).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify that the email matches the logged-in user\n// Перевіряємо, що email відповідає авторизованому користувачу\npm.test(\"User email matches login email\", function () {\n    pm.expect(jsonData.email).to.eql(\n        pm.environment.get(\"loginEmail\")\n    );\n});\n\n// Verify that the user role is authenticated\n// Перевіряємо, що роль користувача — authenticated\npm.test(\"User role is authenticated\", function () {\n    pm.expect(jsonData.role).to.eql(\"authenticated\");\n});\n\n// Verify that the user is not anonymous\n// Перевіряємо, що користувач не є анонімним\npm.test(\"User is not anonymous\", function () {\n    pm.expect(jsonData.is_anonymous).to.eql(false);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC25 - Access Protected Resource Without Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON error response\n// Отримуємо JSON-відповідь із помилкою\nlet jsonData = pm.response.json();\n\n// Verify that access is denied\n// Перевіряємо, що API заборонив доступ\npm.test(\"Status code is 401\", function () {\n    pm.response.to.have.status(401);\n});\n\n// Verify that the response is JSON\n// Перевіряємо, що відповідь має формат JSON\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Verify the authentication error code\n// Перевіряємо код помилки автентифікації\npm.test(\"Error code is no_authorization\", function () {\n    pm.expect(jsonData.error_code).to.eql(\"no_authorization\");\n});\n\n// Verify the error message\n// Перевіряємо повідомлення про відсутність Bearer Token\npm.test(\"Missing Bearer Token message is returned\", function () {\n    pm.expect(jsonData.msg).to.eql(\n        \"This endpoint requires a valid Bearer token\"\n    );\n});\n\n// Verify the response code in the JSON body\n// Перевіряємо код помилки безпосередньо в JSON Body\npm.test(\"Response body code is 401\", function () {\n    pm.expect(jsonData.code).to.eql(401);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC26 - Access Resource with Invalid JWT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON error response\n// Отримуємо JSON-відповідь із помилкою\nlet jsonData = pm.response.json();\n\n// Verify that access is denied\n// Перевіряємо, що API заборонив доступ\npm.test(\"Status code is 401\", function () {\n    pm.response.to.have.status(401);\n});\n\n// Verify that the response is JSON\n// Перевіряємо, що відповідь має формат JSON\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Verify that an authentication error is returned\n// Перевіряємо, що API повертає помилку автентифікації\npm.test(\"Authentication error code is returned\", function () {\n    pm.expect(jsonData).to.have.property(\"error_code\");\n});\n\n// Verify that the error code is not a successful response\n// Перевіряємо, що API не повернув ознаку успішної авторизації\npm.expect(jsonData.error_code).to.be.a(\"string\").and.not.empty;\n\n// Verify that no user ID is returned\n// Перевіряємо, що дані користувача не повертаються\npm.test(\"User ID is not returned\", function () {\n    pm.expect(jsonData).to.not.have.property(\"id\");\n});\n\n// Verify that the response contains an error message\n// Перевіряємо, що відповідь містить повідомлення про помилку\npm.test(\"Error message is returned\", function () {\n    pm.expect(jsonData.msg).to.be.a(\"string\").and.not.empty;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/user?apikey={{apiKey}}&Authorization={{bearer_token_0tpm}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "user"
+              ],
+              "query": [
+                {
+                  "key": "apikey",
+                  "value": "{{apiKey}}"
+                },
+                {
+                  "key": "Authorization",
+                  "value": "{{bearer_token_0tpm}}"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC27 - Access Resource with Expired JWT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON error response\n// Отримуємо JSON-відповідь із помилкою\nlet jsonData = pm.response.json();\n\n// Verify that expired token is rejected\n// Перевіряємо, що прострочений токен відхилено\npm.test(\"Status code is 403\", function () {\n    pm.response.to.have.status(403);\n});\n\n// Verify that the response is JSON\n// Перевіряємо формат відповіді\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Verify the JWT error code\n// Перевіряємо код помилки JWT\npm.test(\"Error code is bad_jwt\", function () {\n    pm.expect(jsonData.error_code).to.eql(\"bad_jwt\");\n});\n\n// Verify that the error message identifies an expired token\n// Перевіряємо, що повідомлення вказує на прострочений токен\npm.test(\"Error message indicates expired token\", function () {\n    pm.expect(jsonData.msg).to.include(\"token is expired\");\n});\n\n// Verify that user ID is not returned\n// Перевіряємо, що ID користувача не повертається\npm.test(\"User ID is not returned\", function () {\n    pm.expect(jsonData).to.not.have.property(\"id\");\n});\n\n// Verify that access is denied\n// Перевіряємо, що доступ заборонено\npm.test(\"Protected user data is not accessible\", function () {\n    pm.expect(jsonData).to.not.have.property(\"email\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{expiredAccessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/user",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "user"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC28 - Refresh Access Token",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Save the current Access Token before refreshing\n// Зберігаємо поточний Access Token перед оновленням\npm.environment.set(\n    \"previousAccessToken\",\n    pm.environment.get(\"accessToken\") || \"\"\n);\n\n// Save the current Refresh Token before refreshing\n// Зберігаємо поточний Refresh Token перед оновленням\npm.environment.set(\n    \"previousRefreshToken\",\n    pm.environment.get(\"refreshToken\") || \"\"\n);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON response\n// Отримуємо JSON-відповідь від API\nlet jsonData = pm.response.json();\n\n// Verify successful token refresh\n// Перевіряємо успішне оновлення токенів\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify that the response is JSON\n// Перевіряємо формат відповіді\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Verify that a new Access Token is returned\n// Перевіряємо наявність нового Access Token\npm.test(\"New Access Token is returned\", function () {\n    pm.expect(jsonData.access_token).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify that a new Refresh Token is returned\n// Перевіряємо наявність Refresh Token\npm.test(\"Refresh Token is returned\", function () {\n    pm.expect(jsonData.refresh_token).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify that the token type is Bearer\n// Перевіряємо тип токена\npm.test(\"Token type is Bearer\", function () {\n    pm.expect(jsonData.token_type.toLowerCase()).to.eql(\"bearer\");\n});\n\n// Verify that the new Access Token differs from the previous one\n// Перевіряємо, що новий Access Token відрізняється від попереднього\npm.test(\"Access Token is refreshed\", function () {\n    pm.expect(jsonData.access_token).to.not.eql(\n        pm.environment.get(\"previousAccessToken\")\n    );\n});\n\n// Verify that token expiration time is positive\n// Перевіряємо, що термін дії токена є додатним\npm.test(\"Token expiration time is valid\", function () {\n    pm.expect(jsonData.expires_in).to.be.a(\"number\");\n    pm.expect(jsonData.expires_in).to.be.above(0);\n});\n\n// Save the new tokens if the refresh was successful\n// Зберігаємо нові токени, якщо оновлення пройшло успішно\nif (\n    pm.response.code === 200 &&\n    jsonData.access_token &&\n    jsonData.refresh_token\n) {\n    pm.environment.set(\"accessToken\", jsonData.access_token);\n    pm.environment.set(\"refreshToken\", jsonData.refresh_token);\n}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"refresh_token\": \"{{refreshToken}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/token?grant_type=refresh_token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "refresh_token"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC29 - Invalid or Revoked Refresh Token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON error response\n// Отримуємо JSON-відповідь із помилкою\nlet jsonData = pm.response.json();\n\n// Verify that the refresh request is rejected\n// Перевіряємо, що запит на оновлення токена відхилено\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// Verify that the response is JSON\n// Перевіряємо формат відповіді\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Verify that an authentication error is returned\n// Перевіряємо наявність коду помилки\npm.test(\"Authentication error code is returned\", function () {\n    pm.expect(jsonData.error_code).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify that no new Access Token is returned\n// Перевіряємо, що новий Access Token не повертається\npm.test(\"Access Token is not returned\", function () {\n    pm.expect(jsonData).to.not.have.property(\"access_token\");\n});\n\n// Verify that no new Refresh Token is returned\n// Перевіряємо, що новий Refresh Token не повертається\npm.test(\"Refresh Token is not returned\", function () {\n    pm.expect(jsonData).to.not.have.property(\"refresh_token\");\n});\n\n// Verify that an error message is returned\n// Перевіряємо наявність повідомлення про помилку\npm.test(\"Error message is returned\", function () {\n    pm.expect(jsonData.msg).to.be.a(\"string\").and.not.empty;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/token?grant_type=refresh_token",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "refresh_token"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC30 - User Logout – Successful Session Termination",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// TC30 - Logout and Session Revocation\n\npm.test(\"Status code is 204\", function () {\n    pm.response.to.have.status(204);\n});\n\npm.test(\"Response body is empty\", function () {\n    pm.expect(pm.response.text()).to.eql(\"\");\n});\n\npm.test(\"Logout request completed successfully\", function () {\n    pm.expect(pm.response.code).to.eql(204);\n});\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Save the current access token before logout\n// Зберігаємо поточний токен перед виходом\npm.environment.set(\n    \"revokedAccessToken\",\n    pm.environment.get(\"accessToken\")\n);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/logout",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "logout"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "07 - Authorization & Data Isolation",
+      "item": [
+        {
+          "name": "TC31 -  Invalid API Key",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON error response\n// Отримуємо JSON-відповідь із помилкою\nlet jsonData = pm.response.json();\n\n// Verify that the API rejects the invalid API key\n// Перевіряємо, що API відхиляє неправильний API Key\npm.test(\"Status code is 401\", function () {\n    pm.response.to.have.status(401);\n});\n\n// Verify that the response is JSON\n// Перевіряємо формат відповіді\npm.test(\"Response is JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Verify that an error message is returned\n// Перевіряємо наявність повідомлення про помилку\npm.test(\"Error message is returned\", function () {\n    pm.expect(jsonData.message || jsonData.msg).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify that no product records are returned\n// Перевіряємо, що дані таблиці не повертаються\npm.test(\"Protected data is not returned\", function () {\n    pm.expect(jsonData).to.not.be.an(\"array\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "invalid_api_key_12345"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=*",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "*"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC32 - Anonymous vs Authenticated Access  Method: GET",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// Parse the JSON response\n// Отримуємо JSON-відповідь\nlet jsonData = pm.response.json();\n\n// Verify successful HTTP response\n// Перевіряємо успішний HTTP статус\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify response is an array\n// Перевіряємо формат відповіді\npm.test(\"Response is an array\", function () {\n    pm.expect(jsonData).to.be.an(\"array\");\n});\n\n// Verify authenticated user can access test records\n// Перевіряємо, що авторизований користувач бачить тестові записи\npm.test(\"Authenticated user can access records\", function () {\n    pm.expect(jsonData.length).to.be.above(0);\n});\n\n// Verify records contain expected fields\n// Перевіряємо наявність очікуваних полів\npm.test(\"Records contain expected fields\", function () {\n    jsonData.forEach(function (record) {\n        pm.expect(record).to.have.property(\"id\");\n    });\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_rls_protected_test?select=*",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_rls_protected_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "*"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC33 - User Can Access Own Data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC33 - User Can Access Own Data\n// Verify that an authenticated user can access their own record.\n\n// Перевіряємо, що API повернув статус 200\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Перевіряємо, що відповідь має формат JSON\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Отримуємо тіло відповіді\nconst responseData = pm.response.json();\n\n// Перевіряємо, що відповідь є масивом\npm.test(\"Response is an array\", function () {\n    pm.expect(responseData).to.be.an(\"array\");\n});\n\n// Перевіряємо, що користувач бачить свій запис\npm.test(\"User can access their own record\", function () {\n    pm.expect(responseData.length).to.be.greaterThan(0);\n});\n\n// Перевіряємо, що запис належить авторизованому користувачу\npm.test(\"Returned record belongs to the authenticated user\", function () {\n    const expectedUserId = \"2d8f9dc6-68bc-4a18-8db1-9bead4420417\";\n\n    responseData.forEach(record => {\n        pm.expect(record.user_id).to.eql(expectedUserId);\n    });\n});\n\n// Перевіряємо наявність тестових даних\npm.test(\"Record contains test data\", function () {\n    pm.expect(responseData[0].test_data).to.eql(\n        \"TC33 - User 1 private test record\"\n    );\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,user_id,test_data"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC34 - User Cannot Access Another User's Data",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC34 - User Cannot Access Another User's Data\n// Verify that RLS prevents access to another user's records.\n\n// Перевіряємо HTTP статус\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Перевіряємо JSON\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\nconst responseData = pm.response.json();\n\n// Перевіряємо, що відповідь є масивом\npm.test(\"Response is an array\", function () {\n    pm.expect(responseData).to.be.an(\"array\");\n});\n\n// Перевіряємо, що власний запис доступний\npm.test(\"User can access their own record\", function () {\n    pm.expect(responseData.length).to.be.greaterThan(0);\n});\n\n// Перевіряємо, що всі записи належать першому користувачу\npm.test(\"All returned records belong to User 1\", function () {\n    const user1Id = \"2d8f9dc6-68bc-4a18-8db1-9bead4420417\";\n\n    responseData.forEach(record => {\n        pm.expect(record.user_id).to.eql(user1Id);\n    });\n});\n\n// Перевіряємо, що запис другого користувача відсутній\npm.test(\"User 2 private record is not exposed\", function () {\n    const user2Id = \"4805b7ca-d2f5-4c43-86e9-04e9314803ca\";\n\n    pm.expect(\n        responseData.some(record => record.user_id === user2Id)\n    ).to.eql(false);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,user_id,test_data"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC35 - Unauthorized Data Modification",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC35 - Unauthorized Data Modification\n// Verify that User 1 cannot modify User 2's record.\n\n// Перевіряємо HTTP статус\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Перевіряємо, що відповідь є JSON\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// Отримуємо тіло відповіді\nconst responseData = pm.response.json();\n\n// Перевіряємо, що відповідь є масивом\npm.test(\"Response is an array\", function () {\n    pm.expect(responseData).to.be.an(\"array\");\n});\n\n// Перевіряємо, що жоден запис не був змінений\npm.test(\"No records were updated\", function () {\n    pm.expect(responseData).to.be.empty;\n});\n\n// Перевіряємо, що PATCH не повернув запис User 2\npm.test(\"User 2 record was not returned\", function () {\n    const user2Id = \"4805b7ca-d2f5-4c43-86e9-04e9314803ca\";\n\n    pm.expect(\n        responseData.some(record => record.user_id === user2Id)\n    ).to.eql(false);\n});\n\n// Перевіряємо, що спроба модифікації не була успішною\npm.test(\"Unauthorized modification was prevented\", function () {\n    pm.expect(responseData.length).to.eql(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Prefer",
+                "value": "return=representation"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"test_data\": \"TC35 - Unauthorized modification attempt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?id=eq.2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "eq.2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC36 - Unauthorized Data Deletion",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC36 - Unauthorized Data Deletion\n// Verify that User 1 cannot delete User 2's record.\n\n// Перевіряємо HTTP статус\npm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Перевіряємо JSON\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\nconst responseData = pm.response.json();\n\n// Перевіряємо, що відповідь є масивом\npm.test(\"Response is an array\", function () {\n    pm.expect(responseData).to.be.an(\"array\");\n});\n\n// Перевіряємо, що жоден запис не був видалений\npm.test(\"No records were deleted\", function () {\n    pm.expect(responseData).to.be.empty;\n});\n\n// Перевіряємо, що запис User 2 не повернувся як видалений\npm.test(\"User 2 record was not returned\", function () {\n    const user2Id = \"4805b7ca-d2f5-4c43-86e9-04e9314803ca\";\n\n    pm.expect(\n        responseData.some(record => record.user_id === user2Id)\n    ).to.eql(false);\n});\n\n// Перевіряємо, що операція видалення не відбулася\npm.test(\"Unauthorized deletion was prevented\", function () {\n    pm.expect(responseData.length).to.eql(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Prefer",
+                "value": "return=representation"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?id=eq.2",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "eq.2"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC37 – Unauthorized Data Insertion (User ID Spoofing)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// Parse the response body\n// Розбираємо тіло відповіді\nconst jsonData = pm.response.json();\n\n// 1. Verify HTTP status\n// Перевіряємо, що запит відхилено\npm.test(\"Status code is 403 Forbidden\", function () {\n    pm.response.to.have.status(403);\n});\n\n// 2. Verify response is JSON\n// Перевіряємо формат JSON\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify PostgreSQL error code\n// Перевіряємо код помилки PostgreSQL\npm.test(\"Error code is 42501\", function () {\n    pm.expect(String(jsonData.code)).to.eql(\"42501\");\n});\n\n// 4. Verify RLS policy violation\n// Перевіряємо, що причина відмови — порушення RLS\npm.test(\"RLS policy violation is reported\", function () {\n    pm.expect(jsonData.message).to.include(\n        \"new row violates row-level security policy\"\n    );\n});\n\n// 5. Verify no successful insert response\n// Перевіряємо, що API не повернув успішно створений запис\npm.test(\"No record was returned as successfully inserted\", function () {\n    pm.expect(jsonData).to.not.have.property(\"user_id\");\n    pm.expect(jsonData).to.not.have.property(\"test_data\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Prefer",
+                "value": "return=representation"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"4805b7ca-d2f5-4c43-86e9-04e9314803ca\",\n  \"test_data\": \"TC37 - Unauthorized insert attempt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC38 - Unauthorized Ownership Modification",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// Parse response body\n// Розбираємо тіло відповіді\nconst jsonData = pm.response.json();\n\n// 1. Verify HTTP status\n// Перевіряємо статус відповіді\npm.test(\"Status code is 403 Forbidden\", function () {\n    pm.response.to.have.status(403);\n});\n\n// 2. Verify JSON response\n// Перевіряємо формат JSON\npm.test(\"Response is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\n// 3. Verify PostgreSQL error code\n// Перевіряємо код помилки PostgreSQL\npm.test(\"Error code is 42501\", function () {\n    pm.expect(String(jsonData.code)).to.eql(\"42501\");\n});\n\n// 4. Verify RLS policy violation\n// Перевіряємо повідомлення про порушення RLS\npm.test(\"RLS policy violation is reported\", function () {\n    pm.expect(jsonData.message).to.include(\n        \"new row violates row-level security policy\"\n    );\n});\n\n// 5. Verify no successful update representation\n// Перевіряємо, що API не повернув оновлений запис\npm.test(\"No updated record is returned\", function () {\n    pm.expect(jsonData).to.not.have.property(\"user_id\");\n    pm.expect(jsonData).to.not.have.property(\"test_data\");\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Prefer",
+                "value": "return=representation"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"user_id\": \"4805b7ca-d2f5-4c43-86e9-04e9314803ca\",\n  \"test_data\": \"TC38 - Ownership modification attempt\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?id=eq.1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "id",
+                  "value": "eq.1"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC39 -  Access Data After Logout Using Previously Issued JWT",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// TC39 - Access Protected Data After Logout\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response is a JSON array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\npm.test(\"Previously authenticated user can still access own data\", function () {\n    const data = pm.response.json();\n    pm.expect(data.length).to.eql(1);\n    pm.expect(data[0].id).to.eql(1);\n});\n\npm.test(\"Only user's own record is returned\", function () {\n    const data = pm.response.json();\n    pm.expect(data[0].user_id).to.eql(\n        \"2d8f9dc6-68bc-4a18-8db1-9bead4420417\"\n    );\n});\n\npm.test(\"Private test record remains unchanged\", function () {\n    const data = pm.response.json();\n    pm.expect(data[0].test_data).to.eql(\n        \"TC33 - User 1 private test record\"\n    );\n});\n"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{revokedAccessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,user_id,test_data"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "08 - API Contract & Schema Validation",
+      "item": [
+        {
+          "name": "TC40 - Full JSON Schema Validation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC40 - Full JSON Schema Validation\n\nconst schema = {\n    type: \"array\",\n    items: {\n        type: \"object\",\n        required: [\"id\", \"user_id\", \"test_data\"],\n        properties: {\n            id: {\n                type: \"integer\"\n            },\n            user_id: {\n                type: \"string\",\n                pattern: \"^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$\"\n            },\n            test_data: {\n                type: \"string\"\n            }\n        },\n        additionalProperties: false\n    }\n};\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response Content-Type is JSON\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\"))\n        .to.include(\"application/json\");\n});\n\npm.test(\"Response matches the full JSON Schema\", function () {\n    pm.response.to.have.jsonSchema(schema);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,user_id,test_data"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC41 - Validate API Response Headers",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC41 - Validate API Response Headers\n\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify that the API returns JSON content\npm.test(\"Content-Type is application/json\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\"))\n        .to.include(\"application/json\");\n});\n\n// Verify the Supabase schema profile\npm.test(\"Content-Profile is public\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Profile\"))\n        .to.eql(\"public\");\n});\n\n// Verify MIME type sniffing protection\npm.test(\"X-Content-Type-Options is nosniff\", function () {\n    pm.expect(pm.response.headers.get(\"X-Content-Type-Options\"))\n        .to.eql(\"nosniff\");\n});\n\n// Verify HTTPS Strict Transport Security\npm.test(\"Strict-Transport-Security is enabled\", function () {\n    const hsts = pm.response.headers.get(\"Strict-Transport-Security\");\n\n    pm.expect(hsts).to.include(\"max-age=31536000\");\n    pm.expect(hsts).to.include(\"includeSubDomains\");\n});\n\n// Verify that Content-Range header is present\npm.test(\"Content-Range header is present\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Range\"))\n        .to.exist;\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,user_id,test_data"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC42 - Authentication Response Schema Validation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC42 - Authentication Response Schema Validation\n\nconst schema = {\n    type: \"object\",\n    required: [\n        \"access_token\",\n        \"token_type\",\n        \"expires_in\",\n        \"expires_at\",\n        \"refresh_token\",\n        \"user\",\n        \"weak_password\"\n    ],\n    properties: {\n        access_token: {\n            type: \"string\",\n            minLength: 1\n        },\n        token_type: {\n            type: \"string\",\n            enum: [\"bearer\"]\n        },\n        expires_in: {\n            type: \"integer\",\n            minimum: 1\n        },\n        expires_at: {\n            type: \"integer\",\n            minimum: 1\n        },\n        refresh_token: {\n            type: \"string\",\n            minLength: 1\n        },\n        user: {\n            type: \"object\",\n            required: [\n                \"id\",\n                \"aud\",\n                \"role\",\n                \"email\",\n                \"is_anonymous\",\n                \"app_metadata\",\n                \"user_metadata\",\n                \"identities\"\n            ],\n            properties: {\n                id: {\n                    type: \"string\",\n                    format: \"uuid\"\n                },\n                aud: {\n                    type: \"string\"\n                },\n                role: {\n                    type: \"string\"\n                },\n                email: {\n                    type: \"string\",\n                    format: \"email\"\n                },\n                is_anonymous: {\n                    type: \"boolean\"\n                },\n                app_metadata: {\n                    type: \"object\"\n                },\n                user_metadata: {\n                    type: \"object\"\n                },\n                identities: {\n                    type: \"array\",\n                    items: {\n                        type: \"object\",\n                        required: [\n                            \"identity_id\",\n                            \"id\",\n                            \"user_id\",\n                            \"provider\"\n                        ],\n                        properties: {\n                            identity_id: {\n                                type: \"string\",\n                                format: \"uuid\"\n                            },\n                            id: {\n                                type: \"string\",\n                                format: \"uuid\"\n                            },\n                            user_id: {\n                                type: \"string\",\n                                format: \"uuid\"\n                            },\n                            provider: {\n                                type: \"string\"\n                            },\n                            identity_data: {\n                                type: \"object\"\n                            }\n                        }\n                    }\n                }\n            }\n        },\n        weak_password: {\n            type: [\"object\", \"null\"]\n        }\n    }\n};\n\n// Check successful authentication\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Check response format\npm.test(\"Response Content-Type is JSON\", function () {\n    pm.expect(pm.response.headers.get(\"Content-Type\"))\n        .to.include(\"application/json\");\n});\n\n// Validate the complete authentication response schema\npm.test(\"Authentication response matches JSON Schema\", function () {\n    pm.response.to.have.jsonSchema(schema);\n});\n\n// Check that access token is not empty\npm.test(\"Access token is present\", function () {\n    const data = pm.response.json();\n    pm.expect(data.access_token).to.be.a(\"string\").and.not.empty;\n});\n\n// Check that refresh token is not empty\npm.test(\"Refresh token is present\", function () {\n    const data = pm.response.json();\n    pm.expect(data.refresh_token).to.be.a(\"string\").and.not.empty;\n});\n\n// Verify authenticated user role\npm.test(\"User role is authenticated\", function () {\n    const data = pm.response.json();\n    pm.expect(data.user.role).to.eql(\"authenticated\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n    \"email\": \"{{loginEmail}}\",\n    \"password\": \"{{loginPassword}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/auth/v1/token?grant_type=password",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "auth",
+                "v1",
+                "token"
+              ],
+              "query": [
+                {
+                  "key": "grant_type",
+                  "value": "password"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "09 - Performance & Reliability",
+      "item": [
+        {
+          "name": "TC43 - API Response Time Validation",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC43 - API Response Time Validation\n\n// Check successful API response\npm.test(\"Status code is 200\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Check API response time\npm.test(\"Response time is below or equal to 1000 ms\", function () {\n    pm.expect(pm.response.responseTime).to.be.at.most(1000);\n});\n\n// Verify response body is valid JSON\npm.test(\"Response body is valid JSON\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// Verify API returns expected user data\npm.test(\"Response contains user data\", function () {\n    const data = pm.response.json();\n\n    pm.expect(data.length).to.be.greaterThan(0);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,user_id,test_data"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC44 - Repeated API Requests Stability",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "\n// TC44 - Repeated API Requests Stability\n\nconst runCount = Number(pm.environment.get(\"tc44_run_count\") || 0);\nlet successCount = Number(pm.environment.get(\"tc44_success_count\") || 0);\nlet failureCount = Number(pm.environment.get(\"tc44_failure_count\") || 0);\n\nlet responseTimes = JSON.parse(\n    pm.environment.get(\"tc44_response_times\") || \"[]\"\n);\n\nlet requestPassed = true;\n\n// Helper function for assertions\nfunction check(condition, message) {\n    pm.test(message, function () {\n        pm.expect(condition).to.eql(true);\n    });\n\n    if (!condition) {\n        requestPassed = false;\n    }\n}\n\n// 1. Check HTTP status\ncheck(\n    pm.response.code === 200,\n    `Request ${runCount}: status is 200`\n);\n\n// 2. Check response time\ncheck(\n    pm.response.responseTime <= 1000,\n    `Request ${runCount}: response time is <= 1000 ms`\n);\n\n// 3. Parse JSON response\nlet tc44Data = [];\n\ntry {\n    tc44Data = pm.response.json();\n\n    check(\n        Array.isArray(tc44Data),\n        `Request ${runCount}: valid JSON array`\n    );\n\n} catch (error) {\n    check(false, `Request ${runCount}: valid JSON array`);\n}\n\n// 4. Check that records are returned\nif (Array.isArray(tc44Data)) {\n\n    check(\n        tc44Data.length > 0,\n        `Request ${runCount}: records are returned`\n    );\n\n    // 5. Check required fields\n    check(\n        tc44Data.every(record =>\n            record.id !== undefined &&\n            record.user_id !== undefined &&\n            record.test_data !== undefined\n        ),\n        `Request ${runCount}: all records have required fields`\n    );\n}\n\n// 6. Update counters\nif (requestPassed) {\n    successCount++;\n} else {\n    failureCount++;\n}\n\npm.environment.set(\"tc44_success_count\", successCount);\npm.environment.set(\"tc44_failure_count\", failureCount);\n\n// 7. Save response time\nresponseTimes.push(pm.response.responseTime);\n\npm.environment.set(\n    \"tc44_response_times\",\n    JSON.stringify(responseTimes)\n);\n\n// 8. Log current request results\nconsole.log(`TC44 Request ${runCount} of 5`);\nconsole.log(`Successful requests: ${successCount}`);\nconsole.log(`Failed requests: ${failureCount}`);\n\n// 9. Final summary after the fifth request\nif (runCount === 5) {\n\n    pm.test(\n        \"All 5 repeated requests were successful\",\n        function () {\n            pm.expect(successCount).to.eql(5);\n            pm.expect(failureCount).to.eql(0);\n        }\n    );\n\n    const averageResponseTime =\n        responseTimes.reduce((sum, time) => sum + time, 0) /\n        responseTimes.length;\n\n    console.log(\"===== TC44 FINAL SUMMARY =====\");\n    console.log(`Total requests: ${runCount}`);\n    console.log(`Successful: ${successCount}`);\n    console.log(`Failed: ${failureCount}`);\n    console.log(\n        `Average response time: ${averageResponseTime.toFixed(2)} ms`\n    );\n    console.log(\"==============================\");\n\n    // Reset run counter for the next test series\n    pm.environment.set(\"tc44_run_count\", 0);\n}\n\n"
+                ]
+              }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC44 - Initialize repeated request counter\n\nlet runCount = Number(pm.environment.get(\"tc44_run_count\") || 0);\n\n// Start a new test series if this is the first request\nif (runCount === 0) {\n    pm.environment.set(\"tc44_success_count\", 0);\n    pm.environment.set(\"tc44_failure_count\", 0);\n    pm.environment.set(\"tc44_response_times\", \"[]\");\n}\n\npm.environment.set(\"tc44_run_count\", runCount + 1);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{accessToken}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data&order=id.asc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_user_data_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,user_id,test_data"
+                },
+                {
+                  "key": "order",
+                  "value": "id.asc"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC45 –  API Invalid Request",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC45 - Error Handling\n\n// Verify expected error status\npm.test(\"Status code is 400\", function () {\n    pm.response.to.have.status(400);\n});\n\n// Verify PostgreSQL error code\npm.test(\"Error code is 22P02\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.code).to.eql(\"22P02\");\n});\n\n// Verify error message\npm.test(\"Error message identifies invalid data type\", function () {\n    const jsonData = pm.response.json();\n    pm.expect(jsonData.message).to.include(\"invalid input syntax\");\n});\n\n// Verify error response is valid JSON\npm.test(\"Error response is valid JSON\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"object\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&id=eq.not-a-number",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "id",
+                  "value": "eq.not-a-number"
+                }
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "TC45 - API Error Recovery",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "// TC45 - API Recovery Validation\n\n// Verify successful response after previous error\npm.test(\"Status code is 200 after error\", function () {\n    pm.response.to.have.status(200);\n});\n\n// Verify valid JSON response\npm.test(\"Response body is a valid JSON array\", function () {\n    pm.expect(pm.response.json()).to.be.an(\"array\");\n});\n\n// Verify expected record is returned\npm.test(\"API returns the expected record\", function () {\n    const jsonData = pm.response.json();\n\n    pm.expect(jsonData).to.have.lengthOf(1);\n    pm.expect(jsonData[0].id).to.eql(1);\n    pm.expect(jsonData[0].product_name).to.eql(\"Laptop\");\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "apikey",
+                "value": "{{apiKey}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/rest/v1/qa_sql_injection_test?select=id,product_name&id=eq.1",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "rest",
+                "v1",
+                "qa_sql_injection_test"
+              ],
+              "query": [
+                {
+                  "key": "select",
+                  "value": "id,product_name"
+                },
+                {
+                  "key": "id",
+                  "value": "eq.1"
+                }
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "bearer_token_0tpm",
+      "secret": true
+    }
+  ]
+}
