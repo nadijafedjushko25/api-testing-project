@@ -524,3 +524,69 @@ The test confirms that user-level data isolation applies to DELETE operations as
 **Security Note:** An HTTP 200 response with an empty array does not mean that a record was deleted. The database verification confirmed that the original record remained unchanged.
 
 The test validates RLS-based deletion protection for the tested endpoint. It does not cover every possible BOLA/IDOR scenario.
+
+# TC37 – Unauthorized Data Insertion (User ID Spoofing)
+
+**Test Case ID:** AUTHZ-007  
+**Category:** Authorization & Data Isolation  
+**Priority:** High  
+**Type:** Negative / Security Testing  
+**Status:** PASS
+
+## Objective
+Verify that an authenticated user cannot insert a database record using another user's UUID by manipulating the `user_id` field.
+
+## Preconditions
+- Supabase project is configured.
+- Row Level Security (RLS) is enabled on `qa_user_data_test`.
+- Authenticated users have INSERT permission.
+- An INSERT policy enforces `auth.uid() = user_id`.
+- Two registered users exist (User 1 and User 2).
+- A valid access token for User 1 is available.
+
+## Test Data
+
+**Authenticated User:** User 1  
+**Target User:** User 2
+
+```json
+{
+  "user_id": "4805b7ca-d2f5-4c43-86e9-04e9314803ca",
+  "test_data": "TC37 - Unauthorized insert attempt"
+}
+```
+
+## Steps
+1. Authenticate as User 1.
+2. Send a POST request to `/rest/v1/qa_user_data_test`.
+3. Include User 2's UUID in the `user_id` field.
+4. Include a valid API key and User 1's Bearer access token.
+5. Submit the request.
+6. Verify the API response and database records.
+
+## Expected Result
+- API rejects the INSERT operation.
+- HTTP status code is `403 Forbidden`.
+- PostgreSQL error code is `42501`.
+- Response indicates an RLS policy violation.
+- No unauthorized record is inserted into the database.
+
+## Actual Result
+- HTTP status: `403 Forbidden`.
+- Error code: `42501`.
+- Error message: `new row violates row-level security policy for table "qa_user_data_test"`.
+- Database verification confirmed that no additional record was inserted.
+- The original two records remained unchanged.
+
+## Postman Assertions
+- Status code is 403.
+- Response is valid JSON.
+- Error code is 42501.
+- RLS policy violation is reported.
+- No successfully inserted record is returned.
+
+## Test Result
+**PASS** – Row Level Security correctly prevents User 1 from inserting a record under User 2's UUID.
+
+## Security Coverage
+This test validates protection against user ID spoofing during INSERT operations using Supabase Row Level Security and the `WITH CHECK` policy.
