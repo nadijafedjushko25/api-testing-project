@@ -655,3 +655,94 @@ Request body:
 ## Security Coverage
 This test validates protection against ownership manipulation through UPDATE operations using Supabase RLS `WITH CHECK` enforcement.
 
+# TC39 – Access Data After Logout Using Previously Issued JWT
+
+**Test Case ID:** TC39  
+**Module:** Authorization & Data Isolation  
+**Category:** Authentication / Token Lifecycle  
+**Priority:** High  
+**Test Type:** Security Testing  
+**Status:** PASS – Observed Behavior Documented
+
+## Objective
+Verify whether a previously issued access token can still be used to access protected data through the Supabase REST API after the user successfully logs out.
+
+## Preconditions
+- A valid Supabase user account exists.
+- The user can authenticate and access their own records.
+- RLS is enabled on the `qa_user_data_test` table.
+- The user has an active access token.
+- The test record belongs to User 1.
+
+## Test Steps
+
+| Step | Action | Expected Result |
+|---|---|---|
+| 1 | Log in using valid credentials (TC22). | Login succeeds and an access token is issued. |
+| 2 | Save the access token before logout. | The token is stored in the `revokedAccessToken` environment variable. |
+| 3 | Log out using `POST /auth/v1/logout` (TC30). | API returns `204 No Content`. |
+| 4 | Send a GET request to `/rest/v1/qa_user_data_test?select=id,user_id,test_data` using the previously issued access token. | The API response reveals whether the token is still accepted after logout. |
+| 5 | Verify the returned data. | If access is granted, only records belonging to the authenticated user are returned according to the RLS policy. |
+
+## Request Details
+
+**Method:** `GET`
+
+**Endpoint:**
+```http
+{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | `{{apiKey}}` |
+| Authorization | `Bearer {{revokedAccessToken}}` |
+
+## Actual Result
+
+**Status Code:** `200 OK`
+
+The API accepted the previously issued access token after the user had successfully logged out.
+
+**Response Body:**
+```json
+[
+  {
+    "id": 1,
+    "user_id": "2d8f9dc6-68bc-4a18-8db1-9bead4420417",
+    "test_data": "TC33 - User 1 private test record"
+  }
+]
+```
+
+## Assertions
+- Response status code is `200 OK`.
+- Response body is a JSON array.
+- The previously authenticated user can still access their own record.
+- Only the user's own record is returned.
+- The private test record remains unchanged.
+
+## Postman Test Results
+**5/5 assertions passed.**
+
+## Conclusion
+The previously issued access token was still accepted by the Supabase REST API after logout in this test execution.
+
+This behavior is consistent with JWT-based authentication, where an access token may remain valid until its expiration time even after the Auth session is terminated.
+
+The Row Level Security (RLS) policy continued to restrict access to the user's own records.
+
+**Important:** The Postman assertions passed because they matched the observed `200 OK` response. This does not mean that immediate access-token invalidation after logout was achieved. If immediate invalidation is a security requirement, this behavior should be reported as a security finding and evaluated separately.
+
+## Test Data
+- **User 1 ID:** `2d8f9dc6-68bc-4a18-8db1-9bead4420417`
+- **User 1 Test Record:** `TC33 - User 1 private test record`
+- **Access Token:** Previously issued JWT saved before logout.
+
+## Related Test Cases
+- TC22 – Login with Valid Credentials
+- TC30 – User Logout – Successful Session Termination
+- TC33 – User Can Access Own Data
+- TC34 – User Cannot Access Another User's Data
