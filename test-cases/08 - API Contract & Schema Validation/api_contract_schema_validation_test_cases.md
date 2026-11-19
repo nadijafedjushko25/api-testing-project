@@ -92,3 +92,101 @@ The API response contract was validated successfully.
 - Supabase
 - JSON Schema
 - JavaScript (Postman Tests)
+  
+# TC41 – Validate API Response Headers
+
+**Test Case ID:** TC41  
+**Module:** API Contract & Schema Validation  
+**Category:** HTTP Response Headers Validation  
+**Priority:** Medium  
+**Test Type:** Positive / Security Testing  
+**Status:** PASS
+
+## Objective
+
+Verify that the Supabase REST API returns the expected HTTP response headers, including content type, schema profile, security headers, and content range information.
+
+## Preconditions
+
+- Supabase project is configured.
+- RLS is enabled on the `qa_user_data_test` table.
+- User 1 has a valid access token.
+- User 1 has permission to read their own records.
+
+## Request Details
+
+**Method:** `GET`
+
+**Endpoint:**
+```http
+{{baseUrl}}/rest/v1/qa_user_data_test?select=id,user_id,test_data
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | `{{apiKey}}` |
+| Authorization | `Bearer {{accessToken}}` |
+
+## Test Steps
+
+| Step | Action | Expected Result |
+|---|---|---|
+| 1 | Send a GET request to the API endpoint. | API returns `200 OK`. |
+| 2 | Check the Content-Type header. | Contains `application/json`. |
+| 3 | Check the Content-Profile header. | Equals `public`. |
+| 4 | Check X-Content-Type-Options. | Equals `nosniff`. |
+| 5 | Check Strict-Transport-Security. | Contains the expected HSTS directives. |
+| 6 | Check Content-Range. | Header is present in the response. |
+
+## Expected Response Headers
+
+| Header | Expected Value |
+|---|---|
+| Content-Type | `application/json; charset=utf-8` |
+| Content-Profile | `public` |
+| X-Content-Type-Options | `nosniff` |
+| Strict-Transport-Security | Contains `max-age=31536000` and `includeSubDomains` |
+| Content-Range | Present |
+
+## Actual Result
+
+**Status Code:** `200 OK`
+
+The API returned all expected response headers.
+
+| Header | Actual Value |
+|---|---|
+| Content-Type | `application/json; charset=utf-8` |
+| Content-Profile | `public` |
+| X-Content-Type-Options | `nosniff` |
+| Strict-Transport-Security | `max-age=31536000; includeSubDomains; preload` |
+| Content-Range | `0-0/*` |
+
+## Postman Test Results
+
+All 6 assertions passed:
+
+- Status code validation – PASS
+- Content-Type validation – PASS
+- Content-Profile validation – PASS
+- X-Content-Type-Options validation – PASS
+- Strict-Transport-Security validation – PASS
+- Content-Range validation – PASS
+
+**Result: 6/6 assertions passed.**
+
+## Conclusion
+
+The Supabase REST API returned the expected HTTP response headers.
+
+The response used JSON content, identified the `public` schema, included MIME type sniffing protection, and provided HTTP Strict Transport Security directives.
+
+The API response header validation was completed successfully.
+
+## Tools Used
+
+- Postman
+- Supabase REST API
+- JavaScript (Postman Tests)
