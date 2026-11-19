@@ -190,3 +190,119 @@ The API response header validation was completed successfully.
 - Postman
 - Supabase REST API
 - JavaScript (Postman Tests)
+
+# TC42 – Authentication Response Schema Validation
+
+**Test Case ID:** TC42  
+**Module:** API Contract & Schema Validation  
+**Category:** Authentication Schema Validation  
+**Priority:** High  
+**Test Type:** Positive Testing  
+**Status:** PASS
+
+## Objective
+
+Verify that the Supabase Authentication API returns a valid JSON response after successful user login, including authentication tokens, expiration information, and user profile data.
+
+## Preconditions
+
+- Supabase project is configured.
+- A registered and confirmed user account exists.
+- Valid login credentials are available.
+- Supabase Auth API is accessible.
+
+## Request Details
+
+**Method:** `POST`
+
+**Endpoint:**
+```http
+{{baseUrl}}/auth/v1/token?grant_type=password
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | `{{apiKey}}` |
+| Content-Type | `application/json` |
+
+**Request Body:**
+```json
+{
+    "email": "{{loginEmail}}",
+    "password": "{{loginPassword}}"
+}
+```
+
+## Test Steps
+
+| Step | Action | Expected Result |
+|---|---|---|
+| 1 | Send a login request with valid credentials. | API returns `200 OK`. |
+| 2 | Validate the response Content-Type. | Response is JSON. |
+| 3 | Validate the authentication response against JSON Schema. | All required fields and data types match the schema. |
+| 4 | Verify access token. | `access_token` is a non-empty string. |
+| 5 | Verify refresh token. | `refresh_token` is a non-empty string. |
+| 6 | Verify authenticated user role. | User role is `authenticated`. |
+
+## JSON Schema Requirements
+
+| Field | Expected Type | Validation |
+|---|---|---|
+| access_token | String | Required, non-empty |
+| refresh_token | String | Required, non-empty |
+| token_type | String | Must equal `bearer` |
+| expires_in | Integer | Positive value |
+| expires_at | Integer | Positive Unix timestamp |
+| user | Object | Must contain required user fields |
+| user.id | String | UUID format |
+| user.email | String | Email format |
+| user.role | String | User role |
+| user.is_anonymous | Boolean | Boolean value |
+| user.identities | Array | Array of identity objects |
+| weak_password | Object / Null | Both types accepted |
+
+## Actual Result
+
+**Status Code:** `200 OK`
+
+The API successfully returned an authentication response containing:
+- Access token
+- Refresh token
+- Token type
+- Token expiration information
+- Authenticated user profile
+- User metadata
+- Identity information
+- Weak password information (`null`)
+
+Sensitive token values were excluded from the documentation.
+
+## Postman Test Results
+
+All configured assertions passed:
+
+- Status code validation – PASS
+- Response Content-Type validation – PASS
+- Authentication JSON Schema validation – PASS
+- Access token validation – PASS
+- Refresh token validation – PASS
+- User role validation – PASS
+
+**Result: All Postman tests passed.**
+
+## Conclusion
+
+The Supabase Authentication API returned a valid response after successful login.
+
+The authentication response matched the defined JSON Schema, including token fields, expiration information, and nested user profile data.
+
+The authentication response contract was validated successfully.
+
+## Tools Used
+
+- Postman
+- Supabase Authentication API
+- JSON Schema
+- JavaScript (Postman Tests)
