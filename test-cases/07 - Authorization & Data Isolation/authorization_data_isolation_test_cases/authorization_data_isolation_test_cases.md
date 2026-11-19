@@ -590,3 +590,68 @@ Verify that an authenticated user cannot insert a database record using another 
 
 ## Security Coverage
 This test validates protection against user ID spoofing during INSERT operations using Supabase Row Level Security and the `WITH CHECK` policy.
+
+# TC38 – Unauthorized Ownership Modification
+
+**Test Case ID:** AUTHZ-008  
+**Category:** Authorization & Data Isolation  
+**Priority:** High  
+**Type:** Negative / Security Testing  
+**Status:** PASS
+
+## Objective
+Verify that an authenticated user cannot change the ownership of their own database record by modifying the `user_id` field to another user's UUID.
+
+## Preconditions
+- Supabase project is configured.
+- RLS is enabled on `qa_user_data_test`.
+- Authenticated users have UPDATE permission.
+- UPDATE policy enforces `auth.uid() = user_id` through both `USING` and `WITH CHECK`.
+- User 1 and User 2 exist.
+- A valid access token for User 1 is available.
+- Record ID 1 belongs to User 1.
+
+## Test Data
+
+**Authenticated User:** User 1  
+**Target Owner:** User 2  
+**Record ID:** 1
+
+Request body:
+
+```json
+{
+  "user_id": "4805b7ca-d2f5-4c43-86e9-04e9314803ca",
+  "test_data": "TC38 - Ownership modification attempt"
+}
+```
+
+## Steps
+1. Authenticate as User 1.
+2. Send a PATCH request to `/rest/v1/qa_user_data_test?id=eq.1`.
+3. Include User 2's UUID in the `user_id` field.
+4. Include User 1's Bearer access token and the API key.
+5. Submit the request.
+6. Verify the API response.
+7. Query the database to confirm that the original record remains unchanged.
+
+## Expected Result
+- API rejects the ownership modification.
+- HTTP status code is `403 Forbidden`.
+- PostgreSQL error code is `42501`.
+- Response indicates an RLS policy violation.
+- The original `user_id` and `test_data` remain unchanged.
+
+## Actual Result
+- HTTP status: `403 Forbidden`.
+- Error code: `42501`.
+- Error message: `new row violates row-level security policy for table "qa_user_data_test"`.
+- All 5 Postman assertions passed.
+- SQL verification confirmed that the original record remained unchanged.
+
+## Test Result
+**PASS** – Row Level Security prevents an authenticated user from changing record ownership to another user's UUID.
+
+## Security Coverage
+This test validates protection against ownership manipulation through UPDATE operations using Supabase RLS `WITH CHECK` enforcement.
+
