@@ -435,3 +435,92 @@ The test confirms that user-level data isolation applies not only to SELECT oper
 
 **Security Note:** An HTTP 200 response with an empty array does not mean that the record was modified. The database verification confirmed that the original record remained unchanged.
 
+# TC36 – Unauthorized Data Deletion
+
+**Test Case ID:** AUTHZ-006  
+**Category:** Authorization & Data Isolation  
+**Priority:** High  
+**Type:** Negative Testing  
+**Status:** PASS
+
+## Objective
+Verify that an authenticated user cannot delete records belonging to another user through the Supabase REST API.
+
+The test validates Row Level Security (RLS) for DELETE operations and ensures that users can only delete their own records.
+
+## Preconditions
+- Supabase project is configured.
+- Table `qa_user_data_test` exists.
+- RLS is enabled on the table.
+- Authenticated users have DELETE permission.
+- An RLS DELETE policy restricts deletion using `auth.uid() = user_id`.
+- Two test users exist in Supabase Authentication.
+- Each user has a separate record in `qa_user_data_test`.
+- A valid access token for User 1 is available.
+
+## Test Data
+
+| Field | User 1 | User 2 |
+|---|---|---|
+| User ID | `2d8f9dc6-68bc-4a18-8db1-9bead4420417` | `4805b7ca-d2f5-4c43-86e9-04e9314803ca` |
+| Record ID | 1 | 2 |
+| Test data | TC33 - User 1 private test record | TC34 - User 2 private test record |
+
+## Request Details
+
+**Method:** DELETE
+
+**Endpoint:**
+```http
+{{baseUrl}}/rest/v1/qa_user_data_test?id=eq.2
+```
+
+**Headers:**
+
+| Key | Value |
+|---|---|
+| apikey | `{{apiKey}}` |
+| Authorization | `Bearer {{accessToken}}` |
+| Prefer | `return=representation` |
+
+**Authenticated user:** User 1
+
+**Target record owner:** User 2
+
+## Expected Result
+- HTTP status code: `200 OK`.
+- Response body is a valid JSON array.
+- Response array is empty because RLS prevents access to User 2's record.
+- No records are deleted.
+- User 2's original record remains in the database.
+
+## Actual Result
+- HTTP status: `200 OK`.
+- Response body: `[]`.
+- No deleted records were returned.
+- SQL Editor verification confirmed that User 2's record remained in the database.
+
+Original record:
+
+`TC34 - User 2 private test record`
+
+## Postman Test Results
+**6/6 assertions passed.**
+
+- Status code is 200 OK.
+- Response is valid JSON.
+- Response is an array.
+- No records were deleted.
+- User 2's record was not returned.
+- Unauthorized deletion was prevented.
+
+## Conclusion
+The test passed successfully.
+
+The RLS DELETE policy correctly prevented User 1 from deleting User 2's record.
+
+The test confirms that user-level data isolation applies to DELETE operations as well as SELECT and UPDATE operations.
+
+**Security Note:** An HTTP 200 response with an empty array does not mean that a record was deleted. The database verification confirmed that the original record remained unchanged.
+
+The test validates RLS-based deletion protection for the tested endpoint. It does not cover every possible BOLA/IDOR scenario.
