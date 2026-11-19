@@ -877,7 +877,7 @@ It complements:
 
 **Note:** The observed HTTP status code and error response reflect the behavior of the tested Supabase Auth endpoint.
 
-TC30 — Logout and Session Revocation
+TC30 – User Logout – Successful Session Termination
 
 PASS
 204 + 403 verified
