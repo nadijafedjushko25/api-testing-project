@@ -32,7 +32,7 @@ jobs:
             --env-var "baseUrl=$SUPABASE_URL" \
             --env-var "apiKey=$SUPABASE_ANON_KEY" \
             --env-var "loginEmail=$TEST_EMAIL" \
-            --env-var "loginPassword=$TEST_PASSWORD" \
+            --env-var "loginPassword=$LOGIN_PASSWORD" \
             --env-var "testPassword=$TEST_PASSWORD" \
             --env-var "longTestPassword=$LONG_TEST_PASSWORD" \
             --reporters cli
@@ -40,5 +40,6 @@ jobs:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
           TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
           LONG_TEST_PASSWORD: ${{ secrets.LONG_TEST_PASSWORD }}
