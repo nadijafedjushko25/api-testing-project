@@ -1,0 +1,44 @@
+
+name: API Tests - Newman
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install Newman
+        run: npm install -g newman
+
+      - name: Run API tests
+        run: |
+          newman run "API Testing Project.postman_collection.json" \
+            --env-var "baseUrl=$SUPABASE_URL" \
+            --env-var "apiKey=$SUPABASE_ANON_KEY" \
+            --env-var "loginEmail=$TEST_EMAIL" \
+            --env-var "loginPassword=$TEST_PASSWORD" \
+            --env-var "testPassword=$TEST_PASSWORD" \
+            --env-var "longTestPassword=$LONG_TEST_PASSWORD" \
+            --reporters cli
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+          TEST_EMAIL: ${{ secrets.TEST_EMAIL }}
+          TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
+          LONG_TEST_PASSWORD: ${{ secrets.LONG_TEST_PASSWORD }}
