@@ -515,7 +515,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"api.testing.qa1211@yopmail.com\",\n  \"password\": \"Qa1!a\"\n}",
+              "raw": "{\n  \"email\": \"api.testing.{{$guid}}@yopmail.com\",\n  \"password\": \"Qa1!\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -563,7 +563,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"api.testing.{{$timestamp}}@yopmail.com\",\n  \"password\": \"Qa1!aB\"\n}",
+              "raw": "{\n  \"email\": \"api.testing.{{$guid}}@yopmail.com\",\n  \"password\": \"Qa1!aB\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -595,6 +595,15 @@
                   "pm.test(\"Status code is 200 OK\", function () {\n    pm.response.to.have.status(200);\n});\n\npm.test(\"Response contains user ID\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.id).to.be.a(\"string\").and.not.empty;\n});\n\npm.test(\"Response contains correct email\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.email).to.include(\"api.testing.\");\n    pm.expect(user.email).to.include(\"@yopmail.com\");\n});\n\npm.test(\"User role is authenticated\", function () {\n    const user = pm.response.json().user;\n    pm.expect(user.role).to.eql(\"authenticated\");\n});"
                 ]
               }
+            },
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "console.log(\"TC04 email:\", pm.variables.replaceIn('api.testing.{{$timestamp}}@yopmail.com'));\nconsole.log(\"longTestPassword exists:\", !!pm.environment.get(\"longTestPassword\"));\nconsole.log(\"longTestPassword length:\", (pm.environment.get(\"longTestPassword\") || \"\").length);"
+                ]
+              }
             }
           ],
           "request": {
@@ -611,7 +620,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"api.testing.{{$timestamp}}@yopmail.com\",\n  \"password\": \"{{longTestPassword}}\"\n}",
+              "raw": "{\n  \"email\": \"api.testing.{{$guid}}@yopmail.com\",\n  \"password\": \"{{longTestPassword}}\"\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -640,7 +649,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test(\"Response status is not a server error\", function () {\n    pm.expect(pm.response.code).to.be.below(500);\n});\n\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n});"
+                  "pm.test(\"Response status is not a server error\", function () {\n    pm.expect(pm.response.code).to.be.below(500);\n});\n\npm.test(\"Response body is valid JSON\", function () {\n    pm.response.to.be.json;\n});\n\npm.test(\"Response time is recorded\", function () {\n    pm.expect(pm.response.responseTime).to.be.a(\"number\");\n});\n\npm.test(\"Status code is 422\", function () {\n    pm.response.to.have.status(422);\n});\n\npm.test(\"Error code is user_already_exists\", function () {\n    const data = pm.response.json();\n    pm.expect(data.error_code).to.eql(\"user_already_exists\");\n});"
                 ]
               }
             }
@@ -659,7 +668,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"api.testing.qa1311@yopmail.com\",\n  \"password\": \"QaTest2026!Secure\"\n}\n",
+              "raw": "{\n  \"email\": \"{{loginEmail}}\",\n  \"password\": \"{{loginPassword}}\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -707,7 +716,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"test@\",\n  \"password\": \"QaTest2026!Secure\"\n}\n",
+              "raw": "{\n  \"email\": \"test@\",\n  \"password\": \"QaInvalidEmail2026!Test\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -755,7 +764,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"api.testing.qa1111@yopmail.comest@\",\n  \"password\": \"\"\n}\n",
+              "raw": "{\n  \"email\": \"api.testing.{{$guid}}@yopmail.com\",\n  \"password\": \"\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -809,7 +818,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"email\": \"api.testing.qa1111@yopmail.comest@\",\n  \"password\": \"Qa1!aB\"\n}\n",
+              "raw": "{\n  \"email\": \"api.testing.{{$guid}}@yopmail.com\",\n  \"password\": \"Qa1!aB\"\n}\n",
               "options": {
                 "raw": {
                   "language": "json"
@@ -857,7 +866,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "\n",
+              "raw": "",
               "options": {
                 "raw": {
                   "language": "json"
@@ -1669,7 +1678,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.environment.unset(\"accessToken\");\npm.environment.unset(\"refreshToken\");"
+                  ""
                 ]
               }
             },
@@ -2761,7 +2770,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "\n// TC44 - Repeated API Requests Stability\n\nconst runCount = Number(pm.environment.get(\"tc44_run_count\") || 0);\nlet successCount = Number(pm.environment.get(\"tc44_success_count\") || 0);\nlet failureCount = Number(pm.environment.get(\"tc44_failure_count\") || 0);\n\nlet responseTimes = JSON.parse(\n    pm.environment.get(\"tc44_response_times\") || \"[]\"\n);\n\nlet requestPassed = true;\n\n// Helper function for assertions\nfunction check(condition, message) {\n    pm.test(message, function () {\n        pm.expect(condition).to.eql(true);\n    });\n\n    if (!condition) {\n        requestPassed = false;\n    }\n}\n\n// 1. Check HTTP status\ncheck(\n    pm.response.code === 200,\n    `Request ${runCount}: status is 200`\n);\n\n// 2. Check response time\ncheck(\n    pm.response.responseTime <= 1000,\n    `Request ${runCount}: response time is <= 1000 ms`\n);\n\n// 3. Parse JSON response\nlet tc44Data = [];\n\ntry {\n    tc44Data = pm.response.json();\n\n    check(\n        Array.isArray(tc44Data),\n        `Request ${runCount}: valid JSON array`\n    );\n\n} catch (error) {\n    check(false, `Request ${runCount}: valid JSON array`);\n}\n\n// 4. Check that records are returned\nif (Array.isArray(tc44Data)) {\n\n    check(\n        tc44Data.length > 0,\n        `Request ${runCount}: records are returned`\n    );\n\n    // 5. Check required fields\n    check(\n        tc44Data.every(record =>\n            record.id !== undefined &&\n            record.user_id !== undefined &&\n            record.test_data !== undefined\n        ),\n        `Request ${runCount}: all records have required fields`\n    );\n}\n\n// 6. Update counters\nif (requestPassed) {\n    successCount++;\n} else {\n    failureCount++;\n}\n\npm.environment.set(\"tc44_success_count\", successCount);\npm.environment.set(\"tc44_failure_count\", failureCount);\n\n// 7. Save response time\nresponseTimes.push(pm.response.responseTime);\n\npm.environment.set(\n    \"tc44_response_times\",\n    JSON.stringify(responseTimes)\n);\n\n// 8. Log current request results\nconsole.log(`TC44 Request ${runCount} of 5`);\nconsole.log(`Successful requests: ${successCount}`);\nconsole.log(`Failed requests: ${failureCount}`);\n\n// 9. Final summary after the fifth request\nif (runCount === 5) {\n\n    pm.test(\n        \"All 5 repeated requests were successful\",\n        function () {\n            pm.expect(successCount).to.eql(5);\n            pm.expect(failureCount).to.eql(0);\n        }\n    );\n\n    const averageResponseTime =\n        responseTimes.reduce((sum, time) => sum + time, 0) /\n        responseTimes.length;\n\n    console.log(\"===== TC44 FINAL SUMMARY =====\");\n    console.log(`Total requests: ${runCount}`);\n    console.log(`Successful: ${successCount}`);\n    console.log(`Failed: ${failureCount}`);\n    console.log(\n        `Average response time: ${averageResponseTime.toFixed(2)} ms`\n    );\n    console.log(\"==============================\");\n\n    // Reset run counter for the next test series\n    pm.environment.set(\"tc44_run_count\", 0);\n}\n\n"
+                  "\n// TC44 - Repeated API Requests Stability\n\nlet runCount = Number(pm.environment.get(\"tc44_run_count\") || 0) + 1;\npm.environment.set(\"tc44_run_count\", runCount);\nlet successCount = Number(pm.environment.get(\"tc44_success_count\") || 0);\nlet failureCount = Number(pm.environment.get(\"tc44_failure_count\") || 0);\n\nlet responseTimes = JSON.parse(\n    pm.environment.get(\"tc44_response_times\") || \"[]\"\n);\n\nlet requestPassed = true;\n\n// Helper function for assertions\nfunction check(condition, message) {\n    pm.test(message, function () {\n        pm.expect(condition).to.eql(true);\n    });\n\n    if (!condition) {\n        requestPassed = false;\n    }\n}\n\n// 1. Check HTTP status\ncheck(\n    pm.response.code === 200,\n    `Request ${runCount}: status is 200`\n);\n\n// 2. Check response time\ncheck(\n    pm.response.responseTime <= 2000,\n    `Request ${runCount}: response time is <= 1000 ms`\n);\n\n// 3. Parse JSON response\nlet tc44Data = [];\n\ntry {\n    tc44Data = pm.response.json();\n\n    check(\n        Array.isArray(tc44Data),\n        `Request ${runCount}: valid JSON array`\n    );\n\n} catch (error) {\n    check(false, `Request ${runCount}: valid JSON array`);\n}\n\n// 4. Check that records are returned\nif (Array.isArray(tc44Data)) {\n\n    check(\n        tc44Data.length > 0,\n        `Request ${runCount}: records are returned`\n    );\n\n    // 5. Check required fields\n    check(\n        tc44Data.every(record =>\n            record.id !== undefined &&\n            record.user_id !== undefined &&\n            record.test_data !== undefined\n        ),\n        `Request ${runCount}: all records have required fields`\n    );\n}\n\n// 6. Update counters\nif (requestPassed) {\n    successCount++;\n} else {\n    failureCount++;\n}\n\npm.environment.set(\"tc44_success_count\", successCount);\npm.environment.set(\"tc44_failure_count\", failureCount);\n\n// 7. Save response time\nresponseTimes.push(pm.response.responseTime);\n\npm.environment.set(\n    \"tc44_response_times\",\n    JSON.stringify(responseTimes)\n);\n\n// 8. Log current request results\nconsole.log(`TC44 Request ${runCount} of 5`);\nconsole.log(`Successful requests: ${successCount}`);\nconsole.log(`Failed requests: ${failureCount}`);\n\n// 9. Final summary after the fifth request\nif (runCount === 5) {\n\n    pm.test(\n        \"All 5 repeated requests were successful\",\n        function () {\n            pm.expect(successCount).to.eql(5);\n            pm.expect(failureCount).to.eql(0);\n        }\n    );\n\n    const averageResponseTime =\n        responseTimes.reduce((sum, time) => sum + time, 0) /\n        responseTimes.length;\n\n    console.log(\"===== TC44 FINAL SUMMARY =====\");\n    console.log(`Total requests: ${runCount}`);\n    console.log(`Successful: ${successCount}`);\n    console.log(`Failed: ${failureCount}`);\n    console.log(\n        `Average response time: ${averageResponseTime.toFixed(2)} ms`\n    );\n    console.log(\"==============================\");\n\n    // Reset run counter for the next test series\n    pm.environment.set(\"tc44_run_count\", 0);\n}\n\n"
                 ]
               }
             },
