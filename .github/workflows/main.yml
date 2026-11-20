@@ -35,6 +35,9 @@ jobs:
             --env-var "loginPassword=$LOGIN_PASSWORD" \
             --env-var "testPassword=$TEST_PASSWORD" \
             --env-var "longTestPassword=$LONG_TEST_PASSWORD" \
+            --env-var "expiredAccessToken=$EXPIRED_TOKEN" \
+            --delay-request 2000 \
+            --timeout-request 15000 \
             --reporters cli
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
@@ -43,3 +46,4 @@ jobs:
           LOGIN_PASSWORD: ${{ secrets.LOGIN_PASSWORD }}
           TEST_PASSWORD: ${{ secrets.TEST_PASSWORD }}
           LONG_TEST_PASSWORD: ${{ secrets.LONG_TEST_PASSWORD }}
+          EXPIRED_TOKEN: ${{ secrets.SUPABASE_EXPIRED_TOKEN }}
